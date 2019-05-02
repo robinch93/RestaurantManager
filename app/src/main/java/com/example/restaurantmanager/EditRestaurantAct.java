@@ -64,7 +64,7 @@ public class EditRestaurantAct extends Activity {
 
 
         //Creating the ArrayAdapter instance having the bank name list
-        ArrayAdapter aa1 = new ArrayAdapter(this,android.R.layout.simple_spinner_item,openhours);
+        ArrayAdapter<String> aa1 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,openhours);
         aa1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
         openhoursTxt.setAdapter(aa1);

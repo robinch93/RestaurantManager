@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity
 
         // to set the colors of the pages.
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout);
-        relativeLayout.setBackgroundColor(getResources().getColor(R.color.lightGreen));
+        ContextCompat.getColor(this, R.color.lightGreen);
 
         String json = MyJSON.getData(getBaseContext(),0);
         try{
