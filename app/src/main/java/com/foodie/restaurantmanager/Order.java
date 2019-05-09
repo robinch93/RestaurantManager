@@ -1,6 +1,4 @@
-package com.example.restaurantmanager;
-
-import org.json.JSONArray;
+package com.foodie.restaurantmanager;
 
 import java.io.Serializable;
 

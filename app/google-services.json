@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "620029173044",
+    "firebase_url": "https://foodie-mad.firebaseio.com",
+    "project_id": "foodie-mad",
+    "storage_bucket": "foodie-mad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:620029173044:android:383568b0cc6de10b",
+        "android_client_info": {
+          "package_name": "com.foodie.restaurantmanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "620029173044-tg9iemiqs5ggp8erit5hlovaicb4p0lg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.foodie.restaurantmanager",
+            "certificate_hash": "b8f6f792b26f99acf6abfb6e6ede6a58fb8308d4"
+          }
+        },
+        {
+          "client_id": "620029173044-gh5mus0hvofte9tbdqruck0cvq70tt9v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtpNxfZrMTW65PKn2VOXCl-JycWwYrv-4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "620029173044-gh5mus0hvofte9tbdqruck0cvq70tt9v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

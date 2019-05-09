@@ -1,4 +1,4 @@
-package com.example.restaurantmanager;
+package com.foodie.restaurantmanager;
 
 import java.io.Serializable;
 
