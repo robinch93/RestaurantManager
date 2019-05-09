@@ -42,7 +42,10 @@ public class MealAdapter extends ArrayAdapter<Meal> {
 
         ImageView imageView = (ImageView)listItem.findViewById(R.id.menuImg);
         String mDrawableName = currentmeal.getmenuImg();
-        if(mDrawableName.startsWith("s_")){
+        if (mDrawableName == null){
+
+        }
+        else if(mDrawableName.startsWith("s_")){
             loadImageFromStorage(currentmeal.getmenuImg(), imageView);
         }else{
             int resID = mContext.getResources().getIdentifier(mDrawableName , "drawable", mContext.getPackageName());

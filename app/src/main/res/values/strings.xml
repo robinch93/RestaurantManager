@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Foodie</string>
+    <string name="app_name">Restaurant</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Chilli Restaurant</string>
@@ -15,5 +15,6 @@
     <string name="r_openhours">Opening Hours</string>
     <string name="r_price">Price</string>
     <string name="r_quantity">Available Quantity</string>
+    <string name="title_activity_abc">Abc</string>
 
 </resources>
