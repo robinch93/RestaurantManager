@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,7 +16,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
 import android.widget.ImageButton;
@@ -61,7 +61,7 @@ public class AppActivity extends AppCompatActivity
 
         // to set the colors of the pages.
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout);
-        relativeLayout.setBackgroundColor(getResources().getColor(R.color.lightGreen));
+        ContextCompat.getColor(this, R.color.lightGreen);
 
         String json = MyJSON.getData(getBaseContext(),0);
         try{
