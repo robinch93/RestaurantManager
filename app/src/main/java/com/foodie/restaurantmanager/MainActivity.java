@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 //        setContentView(R.layout.activity_app);
 //    }
     private static final int RC_SIGN_IN = 0;
+//    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
 
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 startActivity(new Intent(this, AppActivity.class));
                 finish();
                 // ...

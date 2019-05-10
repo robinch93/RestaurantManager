@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +21,16 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -34,6 +46,7 @@ public class MenuDetail extends AppCompatActivity {
     private ImageButton menuImgBtn;
     private String imageName;
     private Bitmap photo;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,27 +54,29 @@ public class MenuDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_details);
         Intent intent = getIntent();
-        Meal item = (Meal)intent.getSerializableExtra("item");
-        final Integer id = Integer.parseInt(intent.getStringExtra("id"));
+        mDatabase = FirebaseDatabase.getInstance().getReference("restaurants");
+        final String m_id = intent.getStringExtra("m_id");
+//        final Integer id = 1;
+        Log.v("m_id",m_id + " :");
         menuImgBtn = (ImageButton) findViewById(R.id.menuImgBtn);
-
-
-        EditText menuNameTxt = (EditText)findViewById(R.id.menuNameTxt);
-        EditText menuDescText = (EditText)findViewById(R.id.menuDescText);
-        EditText menuPriceTxt = (EditText)findViewById(R.id.menuPriceTxt);
-        EditText menuQtyTxt = (EditText)findViewById(R.id.menuQtyTxt);
-//        imageView = (ImageButton) findViewById(R.id.profImgBtn);
-        menuNameTxt.setText(item.getmenuName());
-        menuDescText.setText(item.getmenuDesc());
-        menuPriceTxt.setText(item.getmenuPrice().toString());
-        menuQtyTxt.setText(item.getmenuQty().toString());
-        imageName = item.getmenuImg();
-        Log.v("image",imageName);
-        if(imageName.startsWith("s_")){
-            loadImageFromStorage(imageName, menuImgBtn);
-        }else{
-            int resID = getResources().getIdentifier(imageName , "drawable", getPackageName());
-            menuImgBtn.setImageResource(resID);
+        if (!m_id.equals("-1")){
+            Meal item = (Meal)intent.getSerializableExtra("item");
+            EditText menuNameTxt = (EditText)findViewById(R.id.menuNameTxt);
+            EditText menuDescText = (EditText)findViewById(R.id.menuDescText);
+            EditText menuPriceTxt = (EditText)findViewById(R.id.menuPriceTxt);
+            EditText menuQtyTxt = (EditText)findViewById(R.id.menuQtyTxt);
+            menuNameTxt.setText(item.getmenuName());
+            menuDescText.setText(item.getmenuDesc());
+            menuPriceTxt.setText(item.getmenuPrice().toString());
+            menuQtyTxt.setText(item.getmenuQty().toString());
+            imageName = item.getmenuImg();
+            if(imageName ==null){}
+            else if(imageName.startsWith("s_")){
+                loadImageFromStorage(imageName, menuImgBtn);
+            }else{
+                int resID = getResources().getIdentifier(imageName , "drawable", getPackageName());
+                menuImgBtn.setImageResource(resID);
+            }
         }
 
         saveBtn = (Button)findViewById(R.id.saveButton);
@@ -78,10 +93,21 @@ public class MenuDetail extends AppCompatActivity {
                 EditText menuDescText = (EditText)findViewById(R.id.menuDescText);
                 EditText menuPriceTxt = (EditText)findViewById(R.id.menuPriceTxt);
                 EditText menuQtyTxt = (EditText)findViewById(R.id.menuQtyTxt);
-                Meal newItem = new Meal(id,imageName,menuNameTxt.getText().toString(), menuDescText.getText().toString(), Double.parseDouble(menuPriceTxt.getText().toString()), Integer.parseInt(menuQtyTxt.getText().toString()));
-                resultIntent.putExtra("id",id.toString());
+                if(imageName == null) imageName = "temp.jpg";
+
+                String restaurantid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                if(m_id == "-1"){
+                    DatabaseReference pushedPostRef = mDatabase.child(restaurantid).child("items").push();
+                    String m_id = pushedPostRef.getKey();
+                    resultIntent.putExtra("id","-1");
+                } else{
+                    resultIntent.putExtra("id",m_id.toString());
+                }
+                Meal newItem = new Meal(m_id,imageName,menuNameTxt.getText().toString(), menuDescText.getText().toString(), Double.parseDouble(menuPriceTxt.getText().toString()), Integer.parseInt(menuQtyTxt.getText().toString()));
                 resultIntent.putExtra("item", newItem);
-//                resultIntent.putExtra("picturePath", getIntent().getStringExtra("picturePath"));
+                mDatabase.child(restaurantid).child("items").child(m_id).setValue(newItem);
+                //                resultIntent.putExtra("picturePath", getIntent().getStringExtra("picturePath"));
                 setResult(Activity.RESULT_OK, resultIntent);
                 finish();
 
@@ -128,6 +154,29 @@ public class MenuDetail extends AppCompatActivity {
             loadImageFromStorage(imageName, menuImgBtn);
         }
     }
+//    private void uploadFile(Bitmap bitmap) {
+//        FirebaseStorage storage = FirebaseStorage.getInstance();
+//        StorageReference storageRef = storage.getReferenceFromUrl("Your url for storage");
+//        StorageReference mountainImagesRef = storageRef.child("images/" + chat_id + Utils.getCurrentTimeStamp() + ".jpg");
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+//        byte[] data = baos.toByteArray();
+//        UploadTask uploadTask = mountainImagesRef.putBytes(data);
+//        uploadTask.addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception exception) {
+//                // Handle unsuccessful uploads
+//            }
+//        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//            @Override
+//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+////                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+//                Log.d("downloadUrl-->", "" + taskSnapshot.getMetadata());
+//            }
+//        });
+//
+//    }
     private String saveToInternalStorage(Bitmap bitmapImage){
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         // path to /data/data/yourapp/app_data/imageDir

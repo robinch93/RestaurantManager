@@ -15,5 +15,6 @@
     <string name="r_openhours">Opening Hours</string>
     <string name="r_price">Price</string>
     <string name="r_quantity">Available Quantity</string>
+    <string name="title_activity_abc">Abc</string>
 
 </resources>

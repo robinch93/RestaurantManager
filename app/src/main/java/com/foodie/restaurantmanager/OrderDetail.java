@@ -66,7 +66,7 @@ public class OrderDetail extends AppCompatActivity {
                 String menuDesc = meal.getString("menuDesc");
                 Double menuPrice = meal.getDouble("menuPrice");
                 Integer menuQty = meal.getInt("menuQty");
-                mealsList.add(new Meal(id, menuImg, menuName, menuDesc, menuPrice, menuQty));
+                mealsList.add(new Meal(id.toString(), menuImg, menuName, menuDesc, menuPrice, menuQty));
             }
             mAdapter = new MealAdapter(this,mealsList);
             listView.setAdapter(mAdapter);

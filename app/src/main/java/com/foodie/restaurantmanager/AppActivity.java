@@ -8,7 +8,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.multidex.MultiDex;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,14 +23,16 @@ import android.widget.RelativeLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,12 +44,13 @@ public class AppActivity extends AppCompatActivity
     private ImageButton buttonEdit;
     private static final int EditACTIVITY_REQUEST_CODE = 0;
     public static final String Profile_data = "profile_data";
-    private JSONObject profile;
-
+    private DatabaseReference mDatabase;
+    private Restaurant restaurant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MultiDex.install(this);
         setContentView(R.layout.activity_app);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -63,27 +68,10 @@ public class AppActivity extends AppCompatActivity
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout);
         ContextCompat.getColor(this, R.color.lightGreen);
 
-        String json = MyJSON.getData(getBaseContext(),0);
-        try{
-            profile = new JSONObject(json);
-            TextView nameTv = (TextView)findViewById(R.id.nameTv);
-            TextView emailTv = (TextView)findViewById(R.id.emailTv);
-            TextView phoneTv = (TextView)findViewById(R.id.phoneTv);
-            TextView descriptionTv = (TextView)findViewById(R.id.descriptionTv);
-            TextView addressTv = (TextView)findViewById(R.id.addressTv);
-            TextView openhoursTv = (TextView)findViewById(R.id.openhoursTv);
-            nameTv.setText(profile.getString("name"));
-            emailTv.setText(profile.getString("email"));
-            phoneTv.setText(profile.getString("phone"));
-            descriptionTv.setText(profile.getString("description"));
-            addressTv.setText(profile.getString("address"));
-            openhoursTv.setText(profile.getString("openhours"));
-        } catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        mDatabase = FirebaseDatabase.getInstance().getReference("restaurants");
+        String restaurantid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-
+        getRestaurant(restaurantid);
 
         buttonEdit = (ImageButton)findViewById(R.id.editButton);
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
@@ -191,36 +179,35 @@ public class AppActivity extends AppCompatActivity
             case (EditACTIVITY_REQUEST_CODE) : {
                 if (resultCode == Activity.RESULT_OK) {
                     // TODO Extract the data returned from the child Activity.
-                    TextView nameTv = (TextView)findViewById(R.id.nameTv);
-                    TextView emailTv = (TextView)findViewById(R.id.emailTv);
-                    TextView phoneTv = (TextView)findViewById(R.id.phoneTv);
-                    TextView descriptionTv = (TextView)findViewById(R.id.descriptionTv);
-                    TextView addressTv = (TextView)findViewById(R.id.addressTv);
-                    TextView openhoursTv = (TextView)findViewById(R.id.openhoursTv);
                     ImageView profImgBtn = (ImageView) findViewById(R.id.profImgBtn);
-                    nameTv .setText(data.getStringExtra("nameTxt"));
-                    emailTv .setText(data.getStringExtra("emailTxt"));
-                    phoneTv .setText(data.getStringExtra("phoneTxt"));
-                    descriptionTv .setText(data.getStringExtra("descriptionTxt"));
-                    addressTv .setText(data.getStringExtra("addressTxt"));
-                    openhoursTv .setText(data.getStringExtra("openhoursTxt"));
-                    try {
-                        profile.put("name", data.getStringExtra("nameTxt"));
-                        profile.put("email",data.getStringExtra("emailTxt"));
-                        profile.put("phone",data.getStringExtra("phoneTxt"));
-                        profile.put("description",data.getStringExtra("descriptionTxt"));
-                        profile.put("address",data.getStringExtra("addressTxt"));
-                        profile.put("openhour",data.getStringExtra("openhoursTxt"));
-                        loadImageFromStorage(data.getStringExtra("picturePath"), profImgBtn);
-                    } catch (JSONException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                    MyJSON.saveData(getBaseContext(), profile.toString(),0);
+                    restaurant.name = data.getStringExtra("nameTxt");
+                    restaurant.email = data.getStringExtra("emailTxt");
+                    restaurant.phone = data.getStringExtra("phoneTxt");
+                    restaurant.description = data.getStringExtra("descriptionTxt");
+                    restaurant.address = data.getStringExtra("addressTxt");
+                    restaurant.openhours = data.getStringExtra("openhoursTxt");
+                    restaurant.r_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    loadImageFromStorage(data.getStringExtra("picturePath"), profImgBtn);
+                    mDatabase.child(restaurant.r_id).setValue(restaurant);
+                    fillData(restaurant);
                 }
                 break;
             }
         }
+    }
+    public void fillData(Restaurant restaurant){
+        TextView nameTv = (TextView)findViewById(R.id.nameTv);
+        TextView emailTv = (TextView)findViewById(R.id.emailTv);
+        TextView phoneTv = (TextView)findViewById(R.id.phoneTv);
+        TextView descriptionTv = (TextView)findViewById(R.id.descriptionTv);
+        TextView addressTv = (TextView)findViewById(R.id.addressTv);
+        TextView openhoursTv = (TextView)findViewById(R.id.openhoursTv);
+        nameTv.setText(restaurant.name);
+        emailTv.setText(restaurant.email);
+        phoneTv.setText(restaurant.phone);
+        descriptionTv.setText(restaurant.description);
+        addressTv.setText(restaurant.address);
+        openhoursTv.setText(restaurant.openhours);
     }
     private void loadImageFromStorage(String path, ImageView imageView)
     {
@@ -233,6 +220,29 @@ public class AppActivity extends AppCompatActivity
         {
             e.printStackTrace();
         }
+    }
+    public void getRestaurant(final String restaurantId){
+        ValueEventListener restaurantListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                restaurant = dataSnapshot.getValue(Restaurant.class);
+                if(restaurant == null){
+                    restaurant = new Restaurant(restaurantId, "", "", "", "", "", "");
+                    mDatabase.child(restaurant.r_id).setValue(restaurant);
+                } else{
+                    Log.v("restaurant", restaurant.name);
+                }
+                fillData(restaurant);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("Error", "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        mDatabase.child(restaurantId).addListenerForSingleValueEvent(restaurantListener);
     }
 }
 

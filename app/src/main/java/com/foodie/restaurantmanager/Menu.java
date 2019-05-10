@@ -2,13 +2,24 @@ package com.foodie.restaurantmanager;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,7 +33,9 @@ public class Menu extends AppCompatActivity {
     private MealAdapter mAdapter;
     ArrayList<Meal> mealsList;
     private static final int EditACTIVITY_REQUEST_CODE = 0;
+    private static final int AddACTIVITY_REQUEST_CODE = 1;
     private JSONArray mealResult;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,21 +43,20 @@ public class Menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu);
         String json = MyJSON.getData(getBaseContext(),1);
-
+        mDatabase = FirebaseDatabase.getInstance().getReference("restaurants");
+        String restaurantid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         listView = (ListView) findViewById(R.id.menuList);
 
-        updateListView();
-
+        getItems(restaurantid);
+//        updateListView();
 
         listView.setOnItemClickListener(new  AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
                 Meal setItem = (Meal) listView.getItemAtPosition(position); //
-                String value = setItem.getmenuName(); //getter method
-                Integer val = setItem.getid();
-//                Toast.makeText(Menu.super.getBaseContext(), val.toString(), Toast.LENGTH_SHORT).show();
+                Log.v("itemid", position  + " : " +id);
                 Intent intent = new Intent(getBaseContext(), MenuDetail.class);
-                intent.putExtra("id", val.toString());
+                intent.putExtra("m_id", setItem.getid());
                 intent.putExtra("item", setItem);
                 startActivityForResult(intent, EditACTIVITY_REQUEST_CODE);
             }
@@ -54,6 +66,16 @@ public class Menu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        FloatingActionButton addButton = (FloatingActionButton)this.findViewById(R.id.button_addc);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), MenuDetail.class);
+                intent.putExtra("m_id", "-1");
+                intent.putExtra("item", new Meal());
+                startActivityForResult(intent, EditACTIVITY_REQUEST_CODE);
             }
         });
     }
@@ -111,7 +133,7 @@ public class Menu extends AppCompatActivity {
                 String menuDesc = meal.getString("menuDesc");
                 Double menuPrice = meal.getDouble("menuPrice");
                 Integer menuQty = meal.getInt("menuQty");
-                mealsList.add(new Meal(id, menuImg, menuName, menuDesc, menuPrice, menuQty));
+                mealsList.add(new Meal(id.toString(), menuImg, menuName, menuDesc, menuPrice, menuQty));
             }
             mAdapter = new MealAdapter(this,mealsList);
             listView.setAdapter(mAdapter);
@@ -119,6 +141,32 @@ public class Menu extends AppCompatActivity {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+    public void getItems(final String restaurantId){
+        mealsList = new ArrayList<>();
+        mDatabase.child(restaurantId).child("items").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.d("meal", "onChildAdded:" + dataSnapshot.getKey());
+                Meal meal=dataSnapshot.getValue(Meal.class);
+                mealsList.add(meal);
+                mAdapter = new MealAdapter(getApplicationContext(),mealsList);
+                listView.setAdapter(mAdapter);
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }
