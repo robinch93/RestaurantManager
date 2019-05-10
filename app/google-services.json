@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "620029173044-b852dl1hr56pnlp0n2dv23r9pppo6ngf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.foodie.restaurantmanager",
+            "certificate_hash": "5fdcfed6a86b4ec8ee0d29ef22aedbe90b11f15b"
+          }
+        },
+        {
           "client_id": "620029173044-tg9iemiqs5ggp8erit5hlovaicb4p0lg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
