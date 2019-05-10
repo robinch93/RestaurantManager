@@ -9,7 +9,9 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,6 +38,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class MenuDetail extends AppCompatActivity {
 
@@ -47,6 +52,8 @@ public class MenuDetail extends AppCompatActivity {
     private String imageName;
     private Bitmap photo;
     private DatabaseReference mDatabase;
+    private String m_id;
+    private String restaurantid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +62,9 @@ public class MenuDetail extends AppCompatActivity {
         setContentView(R.layout.menu_details);
         Intent intent = getIntent();
         mDatabase = FirebaseDatabase.getInstance().getReference("restaurants");
-        final String m_id = intent.getStringExtra("m_id");
+        m_id = intent.getStringExtra("m_id");
+        restaurantid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 //        final Integer id = 1;
-        Log.v("m_id",m_id + " :");
         menuImgBtn = (ImageButton) findViewById(R.id.menuImgBtn);
         if (!m_id.equals("-1")){
             Meal item = (Meal)intent.getSerializableExtra("item");
@@ -70,10 +77,24 @@ public class MenuDetail extends AppCompatActivity {
             menuPriceTxt.setText(item.getmenuPrice().toString());
             menuQtyTxt.setText(item.getmenuQty().toString());
             imageName = item.getmenuImg();
-            if(imageName ==null){}
-            else if(imageName.startsWith("s_")){
-                loadImageFromStorage(imageName, menuImgBtn);
-            }else{
+            Log.v("menuimg", "" + imageName);
+            if(imageName !=null){
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                StorageReference storageRef = storage.getReferenceFromUrl("gs://foodie-mad.appspot.com/");
+                storageRef.child(imageName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        // Got the download URL for 'users/me/profile.png'
+                        ImageView profImgBtn = (ImageView) findViewById(R.id.profImgBtn);
+                        new DownloadImageTask(profImgBtn).execute(uri.toString());
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle any errors
+                    }
+                });
+            } else{
                 int resID = getResources().getIdentifier(imageName , "drawable", getPackageName());
                 menuImgBtn.setImageResource(resID);
             }
@@ -93,14 +114,13 @@ public class MenuDetail extends AppCompatActivity {
                 EditText menuDescText = (EditText)findViewById(R.id.menuDescText);
                 EditText menuPriceTxt = (EditText)findViewById(R.id.menuPriceTxt);
                 EditText menuQtyTxt = (EditText)findViewById(R.id.menuQtyTxt);
-                if(imageName == null) imageName = "temp.jpg";
-
+                imageName = "images/r_"+restaurantid+"/" + m_id + ".jpg";
                 String restaurantid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-                if(m_id == "-1"){
+                if(m_id.equals("-1")){
                     DatabaseReference pushedPostRef = mDatabase.child(restaurantid).child("items").push();
-                    String m_id = pushedPostRef.getKey();
-                    resultIntent.putExtra("id","-1");
+                    m_id = pushedPostRef.getKey();
+                    Log.v("m_idinside", m_id);
+                    resultIntent.putExtra("id",m_id);
                 } else{
                     resultIntent.putExtra("id",m_id.toString());
                 }
@@ -147,36 +167,51 @@ public class MenuDetail extends AppCompatActivity {
 //            Uri selectedImage = data.getData();
 //            menuImgBtn.setImageURI(selectedImage);
             photo = (Bitmap) data.getExtras().get("data");
-            saveToInternalStorage(photo);
-            ContextWrapper cw = new ContextWrapper(getApplicationContext());
-            // path to /data/data/yourapp/app_data/imageDir
-            File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-            loadImageFromStorage(imageName, menuImgBtn);
+            uploadFile(photo);
+            menuImgBtn.setImageBitmap(photo);
         }
     }
-//    private void uploadFile(Bitmap bitmap) {
+    private void uploadFile(Bitmap bitmap) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://foodie-mad.appspot.com/");
+        if(m_id.equals("-1")) {
+            DatabaseReference pushedPostRef = mDatabase.child(restaurantid).child("items").push();
+            m_id = pushedPostRef.getKey();
+        }
+        StorageReference mountainImagesRef = storageRef.child("images/r_"+restaurantid+"/" + m_id + ".jpg");
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+        byte[] data = baos.toByteArray();
+        UploadTask uploadTask = mountainImagesRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                Log.d("downloadUrl-->", "a" );
+            }
+        });
+
+    }
+    private void loadImage(String imageName) throws MalformedURLException {
 //        FirebaseStorage storage = FirebaseStorage.getInstance();
-//        StorageReference storageRef = storage.getReferenceFromUrl("Your url for storage");
-//        StorageReference mountainImagesRef = storageRef.child("images/" + chat_id + Utils.getCurrentTimeStamp() + ".jpg");
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
-//        byte[] data = baos.toByteArray();
-//        UploadTask uploadTask = mountainImagesRef.putBytes(data);
-//        uploadTask.addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception exception) {
-//                // Handle unsuccessful uploads
-//            }
-//        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//            @Override
-//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-////                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-//                Log.d("downloadUrl-->", "" + taskSnapshot.getMetadata());
-//            }
-//        });
-//
-//    }
+//        StorageReference storageRef = storage.getReferenceFromUrl("gs://foodie-mad.appspot.com/");
+//        StorageReference mountainImagesRef = storageRef.child(imageUrl);
+//        Uri imageUri = mountainImagesRef.getDownloadUrl().getResult();
+        URL url = new URL(imageName);
+        try {
+            Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+            menuImgBtn.setImageBitmap(bmp);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     private String saveToInternalStorage(Bitmap bitmapImage){
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         // path to /data/data/yourapp/app_data/imageDir
@@ -227,6 +262,27 @@ public class MenuDetail extends AppCompatActivity {
         catch (FileNotFoundException e)
         {
             e.printStackTrace();
+        }
+    }
+    public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap bmp = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                bmp = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return bmp;
+        }
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
         }
     }
 }

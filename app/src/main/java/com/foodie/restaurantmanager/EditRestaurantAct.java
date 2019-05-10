@@ -8,21 +8,35 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class EditRestaurantAct extends Activity {
 
@@ -53,9 +67,25 @@ public class EditRestaurantAct extends Activity {
 //        openhoursTxt.setSelected(true);
         String compareValue = getIntent().getStringExtra("openhoursTv");
 
-        loadImageFromStorage(getIntent().getStringExtra("picturePath"), imageView);
-//        Bitmap bitmap = (Bitmap) getIntent().getParcelableExtra("Bitmap");
-//        imageView.setImageBitmap(bitmap);
+        String image = getIntent().getStringExtra("picturePath");
+        Log.v("picturepath", "" + image);
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://foodie-mad.appspot.com/");
+        if(image != null && !image.equals("")){
+            storageRef.child(image).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    // Got the download URL for 'users/me/profile.png'
+                    ImageView profImgBtn = (ImageView) findViewById(R.id.profImgBtn);
+                    new DownloadImageTask(profImgBtn).execute(uri.toString());
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                }
+            });
+        }
         saveBtn = (Button)findViewById(R.id.saveButton);
 
 
@@ -97,10 +127,11 @@ public class EditRestaurantAct extends Activity {
                 resultIntent.putExtra("descriptionTxt", descriptionTxt.getText().toString());
                 resultIntent.putExtra("addressTxt", addressTxt.getText().toString());
                 resultIntent.putExtra("openhoursTxt", openhoursTxt.getSelectedItem().toString());
-                resultIntent.putExtra("picturePath", getIntent().getStringExtra("picturePath"));
+                String r_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                String imageName = "images/restaurant/"+ r_id + ".jpg";
+                resultIntent.putExtra("picturePath", imageName);
                 setResult(Activity.RESULT_OK, resultIntent);
                 finish();
-
             }
         });
 
@@ -142,48 +173,56 @@ public class EditRestaurantAct extends Activity {
     {
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
             photo = (Bitmap) data.getExtras().get("data");
-            saveToInternalStorage(photo);
-//            imageView.setImageBitmap(photo);
-            ContextWrapper cw = new ContextWrapper(getApplicationContext());
-            // path to /data/data/yourapp/app_data/imageDir
-            File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-            loadImageFromStorage(directory.toString(), imageView);
+            uploadFile(photo);
+            ImageView profImgBtn = (ImageView) findViewById(R.id.profImgBtn);
+            profImgBtn.setImageBitmap(photo);
         }
     }
-    private String saveToInternalStorage(Bitmap bitmapImage){
-        ContextWrapper cw = new ContextWrapper(getApplicationContext());
-        // path to /data/data/yourapp/app_data/imageDir
-        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        // Create imageDir
-        File mypath=new File(directory,"profile.jpg");
 
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(mypath);
-            // Use the compress method on the BitMap object to write image to the OutputStream
-            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
+    private void uploadFile(Bitmap bitmap) {
+        String r_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String imageName = "images/restaurant/"+ r_id + ".jpg";
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://foodie-mad.appspot.com/");
+        StorageReference mountainImagesRef = storageRef.child(imageName);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+        byte[] data = baos.toByteArray();
+        UploadTask uploadTask = mountainImagesRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                Log.d("downloadUrl-->", "abc" );
+            }
+        });
+    }
+
+    public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap bmp = null;
             try {
-                fos.close();
-            } catch (IOException e) {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                bmp = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
                 e.printStackTrace();
             }
+            return bmp;
         }
-        return directory.getAbsolutePath();
-    }
-    private void loadImageFromStorage(String path, ImageButton imageView)
-    {
-        try {
-            File f=new File(path, "profile.jpg");
-            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
-//            ImageView img=(ImageView)findViewById(R.id.imgPicker);
-            imageView.setImageBitmap(b);
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
         }
     }
 }
