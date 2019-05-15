@@ -15,6 +15,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -48,12 +50,14 @@ public class MealAdapter extends ArrayAdapter<Meal> {
         final ImageView imageView = (ImageView)listItem.findViewById(R.id.menuImg);
         String mDrawableName = currentmeal.getmenuImg();
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://foodie-mad.appspot.com/");
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://foodie-mad.appspot.com/"  );
         storageRef.child(mDrawableName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 // Got the download URL for 'users/me/profile.png''
-                new DownloadImageTask(imageView).execute(uri.toString());
+                Glide.with(mContext)
+                        .load(uri.toString())
+                        .into(imageView);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -75,27 +79,5 @@ public class MealAdapter extends ArrayAdapter<Meal> {
         menuQty.setText(currentmeal.getmenuQty().toString());
 
         return listItem;
-    }
-
-    public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap bmp = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                bmp = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return bmp;
-        }
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
     }
 }

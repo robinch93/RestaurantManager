@@ -2,6 +2,7 @@ package com.foodie.restaurantmanager;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -106,4 +108,3 @@ public class MainActivity extends AppCompatActivity {
     }
 
 }
-

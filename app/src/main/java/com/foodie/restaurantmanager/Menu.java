@@ -124,14 +124,17 @@ public class Menu extends AppCompatActivity {
 
     public void getItems(String restaurantId){
         mealsList = new ArrayList<>();
+        mAdapter = new MealAdapter(getApplicationContext(),mealsList);
+        listView.setAdapter(mAdapter);
         mDatabase.child(restaurantId).child("items").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Log.d("meal", "onChildAdded:" + dataSnapshot.getKey());
                 Meal meal=dataSnapshot.getValue(Meal.class);
                 mealsList.add(meal);
-                mAdapter = new MealAdapter(getApplicationContext(),mealsList);
-                listView.setAdapter(mAdapter);
+                mAdapter.notifyDataSetChanged();
+//                mAdapter = new MealAdapter(getApplicationContext(),mealsList);
+//                listView.setAdapter(mAdapter);
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
@@ -148,5 +151,6 @@ public class Menu extends AppCompatActivity {
 
             }
         });
+
     }
 }

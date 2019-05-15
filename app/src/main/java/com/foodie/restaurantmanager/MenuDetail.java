@@ -23,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -80,13 +81,13 @@ public class MenuDetail extends AppCompatActivity {
             Log.v("menuimg", "" + imageName);
             if(imageName !=null){
                 FirebaseStorage storage = FirebaseStorage.getInstance();
-                StorageReference storageRef = storage.getReferenceFromUrl("gs://foodie-mad.appspot.com/");
+                StorageReference storageRef = storage.getReferenceFromUrl("gs://foodie-mad.appspot.com/"  );
                 storageRef.child(imageName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        // Got the download URL for 'users/me/profile.png'
-                        ImageView profImgBtn = (ImageView) findViewById(R.id.profImgBtn);
-                        new DownloadImageTask(profImgBtn).execute(uri.toString());
+                        Glide.with(getApplicationContext())
+                                .load(uri.toString())
+                                .into(menuImgBtn);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override

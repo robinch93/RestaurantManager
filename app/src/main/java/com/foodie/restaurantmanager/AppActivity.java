@@ -26,6 +26,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -215,7 +216,10 @@ public class AppActivity extends AppCompatActivity
                 public void onSuccess(Uri uri) {
                     // Got the download URL for 'users/me/profile.png'
                     ImageView profImgBtn = (ImageView) findViewById(R.id.profImgBtn);
-                    new DownloadImageTask(profImgBtn).execute(uri.toString());
+//                    new DownloadImageTask(profImgBtn).execute(uri.toString());
+                    Glide.with(getApplicationContext())
+                            .load(uri.toString())
+                            .into(profImgBtn);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
