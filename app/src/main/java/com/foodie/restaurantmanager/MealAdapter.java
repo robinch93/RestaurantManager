@@ -49,22 +49,24 @@ public class MealAdapter extends ArrayAdapter<Meal> {
 
         final ImageView imageView = (ImageView)listItem.findViewById(R.id.menuImg);
         String mDrawableName = currentmeal.getmenuImg();
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://foodie-mad.appspot.com/"  );
-        storageRef.child(mDrawableName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                // Got the download URL for 'users/me/profile.png''
-                Glide.with(mContext)
-                        .load(uri.toString())
-                        .into(imageView);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
+        if(mDrawableName !=null){
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReferenceFromUrl("gs://foodie-mad.appspot.com/"  );
+            storageRef.child(mDrawableName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    // Got the download URL for 'users/me/profile.png''
+                    Glide.with(mContext)
+                            .load(uri.toString())
+                            .into(imageView);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                }
+            });
+        }
 
         TextView menuName = (TextView) listItem.findViewById(R.id.menuNameTv);
         menuName.setText(currentmeal.getmenuName());

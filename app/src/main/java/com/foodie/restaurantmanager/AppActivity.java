@@ -216,7 +216,6 @@ public class AppActivity extends AppCompatActivity
                 public void onSuccess(Uri uri) {
                     // Got the download URL for 'users/me/profile.png'
                     ImageView profImgBtn = (ImageView) findViewById(R.id.profImgBtn);
-//                    new DownloadImageTask(profImgBtn).execute(uri.toString());
                     Glide.with(getApplicationContext())
                             .load(uri.toString())
                             .into(profImgBtn);
@@ -251,27 +250,6 @@ public class AppActivity extends AppCompatActivity
             }
         };
         mDatabase.child(restaurantId).child("profile").addListenerForSingleValueEvent(restaurantListener);
-    }
-    public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap bmp = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                bmp = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return bmp;
-        }
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
     }
 }
 

@@ -198,46 +198,7 @@ public class MenuDetail extends AppCompatActivity {
         });
 
     }
-    private void loadImage(String imageName) throws MalformedURLException {
-//        FirebaseStorage storage = FirebaseStorage.getInstance();
-//        StorageReference storageRef = storage.getReferenceFromUrl("gs://foodie-mad.appspot.com/");
-//        StorageReference mountainImagesRef = storageRef.child(imageUrl);
-//        Uri imageUri = mountainImagesRef.getDownloadUrl().getResult();
-        URL url = new URL(imageName);
-        try {
-            Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            menuImgBtn.setImageBitmap(bmp);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    private String saveToInternalStorage(Bitmap bitmapImage){
-        ContextWrapper cw = new ContextWrapper(getApplicationContext());
-        // path to /data/data/yourapp/app_data/imageDir
-        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        // Create imageDir
-        imageName = "s_" + imageName;
-        File mypath=new File(directory,imageName);
-        Log.v("Image",mypath.toString());
 
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(mypath);
-            // Use the compress method on the BitMap object to write image to the OutputStream
-            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return directory.getAbsolutePath();
-    }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -249,41 +210,6 @@ public class MenuDetail extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
             }
-        }
-    }
-    private void loadImageFromStorage(String imageName, ImageView imageView)
-    {
-        try {
-            ContextWrapper cw = new ContextWrapper(getBaseContext());
-            File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-            File f=new File(directory.toString(),imageName);
-            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
-            imageView.setImageBitmap(b);
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-    }
-    public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap bmp = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                bmp = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return bmp;
-        }
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
         }
     }
 }
