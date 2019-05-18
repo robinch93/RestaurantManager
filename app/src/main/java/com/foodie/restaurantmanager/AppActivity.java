@@ -1,6 +1,7 @@
 package com.foodie.restaurantmanager;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -12,8 +13,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
+import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -21,13 +22,17 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -48,7 +53,7 @@ import java.io.InputStream;
 
 public class AppActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    private static final int ERROR_DIALOG_REQUEST = 9001;
     private ImageButton buttonEdit;
     private static final int EditACTIVITY_REQUEST_CODE = 0;
     public static final String Profile_data = "profile_data";
@@ -155,6 +160,12 @@ public class AppActivity extends AppCompatActivity
         } else if (id == R.id.nav_slideshow) {
             Intent intent = new Intent(getBaseContext(), Orders.class);
             startActivity(intent);
+        } else if (id == R.id.nav_search) {
+            if(isServicesOK()){
+                Intent intent = new Intent(getBaseContext(), SearchRider_map.class);
+                startActivity(intent);
+            }
+
         } else if (id == R.id.nav_logout) {
             AuthUI.getInstance()
                     .signOut(this)
@@ -169,6 +180,27 @@ public class AppActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public boolean isServicesOK(){
+       // Log.d(TAG, "isServicesOK: checking google services version");
+
+        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(AppActivity.this);
+
+        if(available == ConnectionResult.SUCCESS){
+            //everything is fine and the user can make map requests
+           // Log.d(TAG, "isServicesOK: Google Play Services is working");
+            return true;
+        }
+        else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
+            //an error occured but we can resolve it
+            //Log.d(TAG, "isServicesOK: an error occured but we can fix it");
+            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(AppActivity.this, available, ERROR_DIALOG_REQUEST);
+            dialog.show();
+        }else{
+            Toast.makeText(this, "You can't make map requests", Toast.LENGTH_SHORT).show();
+        }
+        return false;
     }
 
     @Override
