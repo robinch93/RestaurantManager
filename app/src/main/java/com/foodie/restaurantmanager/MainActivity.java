@@ -5,8 +5,10 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -15,6 +17,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.InputStream;
@@ -95,8 +101,23 @@ public class MainActivity extends AppCompatActivity {
 
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
-                startActivity(new Intent(this, AppActivity.class));
-                finish();
+                FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            return;
+                        }
+                        // Get new Instance ID token
+                        DatabaseReference mDatabase;
+                        mDatabase = FirebaseDatabase.getInstance().getReference("restaurants");
+                        String restaurantId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        String token = task.getResult().getToken();
+                        mDatabase.child(restaurantId).child("profile").child("token").setValue(token);
+                        mDatabase.child(restaurantId).child("profile").child("r_id").setValue(restaurantId);
+                        startActivity(new Intent(getApplicationContext(), AppActivity.class));
+                        finish();
+                    }
+                });
                 // ...
             } else {
                 // Sign in failed. If response is null the user canceled the

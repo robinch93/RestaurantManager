@@ -9,12 +9,13 @@ public class Restaurant {
     public String address;
     public String openhours;
     public String image;
+    public String token;
 
     public Restaurant() {
         // Default constructor required for calls to DataSnapshot.getValue(Restaurant.class)
     }
 
-    public Restaurant(String r_id, String name, String email, String phone, String description, String address, String openhours, String image) {
+    public Restaurant(String r_id, String name, String email, String phone, String description, String address, String openhours, String image, String token) {
         this.r_id = r_id;
         this.name = name;
         this.email = email;
@@ -23,5 +24,6 @@ public class Restaurant {
         this.address = address;
         this.openhours = openhours;
         this.image = image;
+        this.token = token;
     }
 }

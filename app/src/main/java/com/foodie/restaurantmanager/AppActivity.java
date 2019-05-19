@@ -267,7 +267,7 @@ public class AppActivity extends AppCompatActivity
                 // Get Post object and use the values to update the UI
                 restaurant = dataSnapshot.getValue(Restaurant.class);
                 if(restaurant == null){
-                    restaurant = new Restaurant(restaurantId, "", "", "", "", "", "", "");
+                    restaurant = new Restaurant(restaurantId, "", "", "", "", "", "", "","");
                     mDatabase.child(restaurant.r_id).child("profile").setValue(restaurant);
                 } else{
                     Log.v("restaurant", restaurant.name);
