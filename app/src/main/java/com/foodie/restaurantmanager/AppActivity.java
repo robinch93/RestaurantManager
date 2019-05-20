@@ -150,14 +150,14 @@ public class AppActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_profile) {
             // Handle the camera action
 //            Toast.makeText(this, "Clicked item one", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_menu) {
 //            Toast.makeText(this, "Clicked item two", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getBaseContext(), com.foodie.restaurantmanager.Menu.class);
             startActivity(intent);
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_order) {
             Intent intent = new Intent(getBaseContext(), Orders.class);
             startActivity(intent);
         } else if (id == R.id.nav_search) {

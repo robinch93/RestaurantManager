@@ -2,17 +2,17 @@
     <string name="app_name">Restaurant</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Chilli Restaurant</string>
+    <string name="nav_header_title">FOODIE</string>
     <string name="nav_header_subtitle">restaurant_chilli@gmail.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="r_name">Name</string>
-    <string name="r_email">Email</string>
-    <string name="r_phone">Phone</string>
-    <string name="r_description">Description</string>
-    <string name="r_address">Address</string>
-    <string name="r_openhours">Opening Hours</string>
+    <string name="r_name">Chilli</string>
+    <string name="r_email">restaurant_chilli@gmail.com</string>
+    <string name="r_phone">+348762563909</string>
+    <string name="r_description">Hot and Spicy Chilli</string>
+    <string name="r_address">Via paolo borsellino 42, Torino</string>
+    <string name="r_openhours">10am-5pm</string>
     <string name="r_price">Price</string>
     <string name="r_quantity">Available Quantity</string>
     <string name="title_activity_abc">Abc</string>

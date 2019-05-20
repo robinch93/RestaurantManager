@@ -13,7 +13,8 @@
         android:layout_marginStart="18dp"
         android:layout_marginLeft="18dp"
         android:layout_marginTop="15dp"
-        android:text="OrderID:" />
+        android:text="OrderID:"
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/orderID"
@@ -36,7 +37,8 @@
         android:layout_alignLeft="@+id/textView"
         android:layout_below="@+id/textView"
         android:layout_marginTop="15dp"
-        android:text="Customer Name:" />
+        android:text="Customer Name:"
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/customerName"
@@ -57,7 +59,8 @@
         android:layout_alignLeft="@+id/textView"
         android:layout_below="@+id/textView1"
         android:layout_marginTop="15dp"
-        android:text="Lunch Time:" />
+        android:text="Lunch Time:"
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/lunchTime"
@@ -78,7 +81,8 @@
         android:layout_alignLeft="@+id/textView"
         android:layout_below="@+id/textView2"
         android:layout_marginTop="15dp"
-        android:text="Order Status:" />
+        android:text="Order Status:"
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/status"
@@ -99,7 +103,8 @@
         android:layout_alignLeft="@+id/textView"
         android:layout_below="@+id/textView3"
         android:layout_marginTop="15dp"
-        android:text="Notes:" />
+        android:text="Notes:"
+        android:textStyle="bold"/>
     <TextView
         android:id="@+id/notes"
         android:layout_width="wrap_content"

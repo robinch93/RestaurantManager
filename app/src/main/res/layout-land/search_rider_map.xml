@@ -18,15 +18,32 @@
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:elevation="10dp"
-        android:background="#fff"
+        android:background="@drawable/white_border"
         android:id="@+id/mapRellayout">
-
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Available Riders near me"
-            android:textSize="30sp"
-            android:textColor="#000"/>
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="match_parent"
+                android:text="Select Riders"
+                android:textSize="30sp"
+                android:textColor="#000"
+                android:id="@+id/mapText"/>
+
+            <Button style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="match_parent"
+                android:text="Select"
+                android:id="@+id/btnSelect"
+                android:layout_below="@+id/mapText"
+                android:enabled="true" />
+        </LinearLayout>
 
     </RelativeLayout>
     <ImageView

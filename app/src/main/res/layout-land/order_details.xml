@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#D3D3D3">
 
     <LinearLayout
         android:id="@+id/layoutTitle"
@@ -13,7 +14,8 @@
         android:paddingLeft="10dp"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
-        android:paddingTop="15dp">
+        android:paddingTop="15dp"
+        android:background="#00695C">
 
         <ImageButton
             android:id="@+id/btnBack"
@@ -21,7 +23,8 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="30dp"
             android:layout_weight="0.10"
-            app:srcCompat="?attr/actionModeCloseDrawable" />
+            android:background="#00695C"
+            app:srcCompat="@drawable/back"  />
 
         <TextView
             android:id="@+id/title"
@@ -59,7 +62,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:text="OrderID:" />
+                android:text="OrderID:"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/customerNameText"
@@ -67,22 +71,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_alignParentTop="true"
-                android:text="Customer Name:" />
+                android:text="Customer Name:"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/statusText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="Status:" />
+                android:text="Status:"
+                android:textStyle="bold"/>
 
-
-            <TextView
-                android:id="@+id/orderStatusTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="New" />
 
         </LinearLayout>
 
@@ -119,14 +118,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text="status" />
-
-
-            <TextView
-                android:id="@+id/orderStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="new" />
 
         </LinearLayout>
     </LinearLayout>

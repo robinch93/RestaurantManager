@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#D3D3D3"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity">
 
@@ -12,6 +13,7 @@
         android:layout_width="match_parent"
         android:gravity="center_horizontal"
         android:paddingLeft="10dp"
+        android:background="#00695C"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
         android:paddingTop="15dp">
@@ -22,7 +24,8 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="30dp"
             android:layout_weight="0.10"
-            app:srcCompat="?attr/actionModeCloseDrawable" />
+            android:background="#00695C"
+            app:srcCompat="@drawable/back"  />
 
         <TextView
             android:id="@+id/title"

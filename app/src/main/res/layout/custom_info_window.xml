@@ -20,6 +20,7 @@
             android:maxLines="1"
             android:textColor="#000"
             android:textSize="14sp"
+            android:text="Rider Name"
             android:textStyle="bold"/>
 
         <TextView
@@ -29,6 +30,7 @@
             android:maxLines="10"
             android:textSize="14sp"
             android:textColor="#000"
+            android:text="Rider info"
             android:id="@+id/snippet"/>
     </LinearLayout>
 

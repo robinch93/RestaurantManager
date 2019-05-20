@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="#D3D3D3"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,6 +12,7 @@
         android:gravity="center_horizontal"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
+        android:background="#00695C"
         android:animateLayoutChanges="true"
         android:paddingTop="15dp">
 
@@ -20,7 +22,8 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="30dp"
             android:layout_weight="0.10"
-            app:srcCompat="?attr/actionModeCloseDrawable" />
+            android:background="#00695C"
+            app:srcCompat="@drawable/back" />
 
         <TextView
             android:id="@+id/title"
@@ -82,61 +85,85 @@
                     android:paddingTop="10dp"
                     android:paddingLeft="30dp"
                     android:paddingRight="20dp" >
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/nameTxtLayout"
+                    <LinearLayout
+                        android:id="@+id/ltitle"
+                        android:orientation="horizontal"
+                        android:paddingLeft="25dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true">
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/titlefood"/>
                         <EditText
-                            android:id="@+id/nameTxt"
-                            android:layout_width="match_parent"
+                            android:id="@+id/menuNameTxt"
+                            android:textStyle="bold"
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:maxLength="50"
-                            android:ems="10"
-                            android:inputType="textPersonName"
-                            android:hint="Title"/>
-                    </android.support.design.widget.TextInputLayout>
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/emailTxtLayout"
+                            android:paddingLeft="20dp"
+                            android:text="Pizza"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ldesc"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="25dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true">
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/info"/>
                         <EditText
-                            android:id="@+id/emailTxt"
-                            android:layout_width="match_parent"
+                            android:textStyle="bold"
+                            android:id="@+id/menuDescText"
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:inputType="textEmailAddress"
-                            android:hint="Description" />
-                    </android.support.design.widget.TextInputLayout>
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/descriptionTxtLayout"
+                            android:paddingLeft="20dp"
+                            android:text="HOT pizza"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/lPrice"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="25dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true">
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/euro"/>
                         <EditText
-                            android:id="@+id/descriptionTxt"
-                            android:layout_width="match_parent"
+                            android:textStyle="bold"
+                            android:id="@+id/menuPriceTxt"
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:maxLength="50"
-                            android:ems="10"
-                            android:inputType="text"
-                            android:hint="Price" />
-                    </android.support.design.widget.TextInputLayout>
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/addressTxtLayout"
+                            android:paddingLeft="20dp"
+                            android:text="30"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="25dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true">
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/order"/>
                         <EditText
-                            android:id="@+id/addressTxt"
-                            android:layout_width="match_parent"
+                            android:textStyle="bold"
+                            android:id="@+id/menuQtyTxt"
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:maxLength="50"
-                            android:ems="10"
-                            android:inputType="text"
-                            android:hint="Quantity Available"/>
-                    </android.support.design.widget.TextInputLayout>
+                            android:paddingLeft="20dp"
+                            android:text="3"/>
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -146,8 +173,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/layoutEdit"
                     android:orientation="vertical"
-                    android:paddingLeft="20dp"
-                    android:paddingTop="10dp">
+                    android:paddingLeft="20dp">
 
                     <Button
                         android:id="@+id/saveButton"
@@ -156,7 +182,7 @@
                         android:layout_below="@+id/layoutAddress"
                         android:layout_gravity="center_horizontal"
                         android:text="SAVE"
-                        android:textColor="@color/colorAccent" />
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 

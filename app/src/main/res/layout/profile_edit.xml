@@ -3,71 +3,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <LinearLayout
-        android:id="@+id/layoutTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:animateLayoutChanges="true"
-        android:paddingTop="15dp">
-
-        <ImageButton
-            android:id="@+id/btnBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.10"
-            app:srcCompat="?attr/actionModeCloseDrawable" />
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginRight="100dp"
-            android:layout_weight="0.80"
-            android:gravity="center_horizontal"
-            android:inputType="textPersonName"
-            android:text="FOODIE"
-            android:textSize="30sp"
-            android:textStyle="bold|italic" />
-
-    </LinearLayout>
+    android:layout_height="wrap_content"
+    android:background="#D3D3D3">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:layout_below="@+id/layoutTitle">
+        android:gravity="center_horizontal">
 
         <LinearLayout
-            android:id="@+id/layoutImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="25dp"
-            android:paddingLeft="25dp">
-
+            android:id="@+id/layoutprofile"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:background="@drawable/appetizers"
+            android:orientation="vertical">
             <ImageButton
                 android:id="@+id/profImgBtn"
-                android:layout_width="180dp"
-                android:layout_height="180dp"
-                android:src="@drawable/restraunt"
-                tools:srcCompat="@drawable/restraunt"
-                android:scaleType="fitCenter"/>
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="70dp"
+                android:src="@drawable/prof" />
+
+            <EditText
+                android:id="@+id/nameTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/r_name"
+                android:textColor="#fff"
+                android:textSize="35sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_toRightOf="@+id/layoutImage"
-            android:layout_toEndOf="@+id/layoutImage"
             android:fillViewport="true">
 
             <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:stretchColumns="1">
 
                 <LinearLayout
@@ -75,107 +52,100 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:orientation="vertical"
-                    android:paddingLeft="30dp"
-                    android:paddingRight="20dp" >
+                    android:orientation="vertical">
 
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/nameTxtLayout"
+                    <LinearLayout
+                        android:id="@+id/lname"
+                        android:orientation="horizontal"
+                        android:paddingLeft="25dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="10dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="5dp">
-                        <EditText
-                            android:id="@+id/nameTxt"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:maxLength="50"
-                            android:ems="10"
-                            android:inputType="textPersonName"
-                            android:hint="@string/r_name"/>
-                    </android.support.design.widget.TextInputLayout>
-
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/emailTxtLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="5dp">
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/email"/>
                         <EditText
                             android:id="@+id/emailTxt"
-                            android:layout_width="match_parent"
+                            android:textStyle="bold"
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:maxLength="50"
-                            android:ems="10"
-                            android:inputType="textEmailAddress"
-                            android:hint="@string/r_email" />
-                    </android.support.design.widget.TextInputLayout>
+                            android:paddingLeft="20dp"
+                            android:text="@string/r_email"/>
+                    </LinearLayout>
 
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/phoneTxtLayout"
+                    <LinearLayout
+                        android:id="@+id/lphone"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="25dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="5dp">
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/call"/>
                         <EditText
+                            android:textStyle="bold"
                             android:id="@+id/phoneTxt"
-                            android:layout_width="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:maxLength="50"
-                            android:ems="10"
-                            android:inputType="text"
-                            android:hint="@string/r_phone" />
-                    </android.support.design.widget.TextInputLayout>
-
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/descriptionLayout"
+                            android:paddingLeft="20dp"
+                            android:text="@string/r_phone"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/lAddress"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="25dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="5dp">
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/home"/>
                         <EditText
-                            android:id="@+id/descriptionTxt"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:maxLength="50"
-                            android:inputType="text"
-                            android:ems="10"
-                            android:hint="@string/r_description"/>
-                    </android.support.design.widget.TextInputLayout>
-
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/addressLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="5dp">
-                        <EditText
+                            android:textStyle="bold"
                             android:id="@+id/addressTxt"
-                            android:layout_width="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:maxLength="50"
-                            android:inputType="text"
-                            android:ems="10"
-                            android:hint="@string/r_address"/>
-                    </android.support.design.widget.TextInputLayout>
+                            android:paddingLeft="20dp"
+                            android:text="@string/r_address"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="25dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/info"/>
+                        <EditText
+                            android:textStyle="bold"
+                            android:id="@+id/descriptionTxt"
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="20dp"
+                            android:text="@string/r_description"/>
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/openhoursLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
                         android:orientation="horizontal"
-                        android:animateLayoutChanges="true"
-                        android:layout_marginTop="5dp">
+                        android:paddingLeft="25dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                        <TextView
-                            android:id="@+id/openhoursTv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:scrollHorizontally="false"
-                            android:ems="5"
-                            android:textSize="20dp"
-                            android:hint="Open Hours"/>
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/openhours"/>
 
                         <Spinner
                             android:id="@+id/spinner1"
@@ -193,9 +163,9 @@
                         android:layout_below="@+id/openhoursLayout"
                         android:paddingTop="10dp"
                         android:layout_marginTop="10dp"
-                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="250dp"
                         android:text="SAVE"
-                        android:textColor="@color/colorAccent" />
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
