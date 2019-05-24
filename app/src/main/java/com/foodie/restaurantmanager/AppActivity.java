@@ -62,6 +62,7 @@ public class AppActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.NoActionBar);
         super.onCreate(savedInstanceState);
         MultiDex.install(this);
         setContentView(R.layout.activity_app);
