@@ -85,7 +85,15 @@ public class AppActivity extends AppCompatActivity
         mDatabase = FirebaseDatabase.getInstance().getReference("restaurants");
         String restaurantid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        getRestaurant(restaurantid);
+        Intent i = getIntent();
+        restaurant = (Restaurant) i.getSerializableExtra("item");
+        if(restaurant == null){
+            getRestaurant(restaurantid);
+        } else {
+            Log.v("AppActivity", "" + restaurant.r_id );
+            fillData(restaurant);
+        }
+
 
         buttonEdit = (ImageButton)findViewById(R.id.editButton);
 

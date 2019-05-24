@@ -17,8 +17,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -53,11 +56,30 @@ public class MainActivity extends AppCompatActivity {
 
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            startActivity(new Intent(this, AppActivity.class));
-            finish();
-//            Intent i = new Intent(this, AppActivity.class); // Your list's Intent
-//            i.setFlags(i.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY); // Adds the FLAG_ACTIVITY_NO_HISTORY flag
-//            startActivity(i);
+//            startActivity(new Intent(this, AppActivity.class));
+//            finish();
+            DatabaseReference mDatabase;
+            mDatabase = FirebaseDatabase.getInstance().getReference("restaurants");
+            String r_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            ValueEventListener restaurantListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Restaurant restaurant;
+                    // Get Post object and use the values to update the UI
+                    restaurant = dataSnapshot.getValue(Restaurant.class);
+                    Log.v("AppActivity", "" + restaurant);
+                    Intent i = new Intent(getApplicationContext(), AppActivity.class);
+                    i.putExtra("item", restaurant);
+                    startActivity(i);
+                    finish();
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Getting Post failed, log a message
+                    Log.w("Error", "loadPost:onCancelled", databaseError.toException());
+                }
+            };
+            mDatabase.child(r_id).child("profile").addListenerForSingleValueEvent(restaurantListener);
         } else {
             // Create and launch sign-in intent
             startActivityForResult(

@@ -1,6 +1,8 @@
 package com.foodie.restaurantmanager;
 
-public class Restaurant {
+import java.io.Serializable;
+
+public class Restaurant implements Serializable {
     public String r_id;
     public String name;
     public String email;

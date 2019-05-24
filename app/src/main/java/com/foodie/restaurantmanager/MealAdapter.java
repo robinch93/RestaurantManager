@@ -23,6 +23,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.InputStream;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +48,9 @@ public class MealAdapter extends ArrayAdapter<Meal> {
 
         Meal currentmeal = mealsList.get(position);
 
-        final ImageView imageView = (ImageView)listItem.findViewById(R.id.menuImg);
+        ImageView imageView = (ImageView)listItem.findViewById(R.id.menuImg);
+        final WeakReference<ImageView> imageViewReference = new WeakReference<ImageView>(imageView);;
+        Log.d("meal", "mealadapter called");
         String mDrawableName = currentmeal.getmenuImg();
         if(mDrawableName !=null){
             FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -56,9 +59,10 @@ public class MealAdapter extends ArrayAdapter<Meal> {
                 @Override
                 public void onSuccess(Uri uri) {
                     // Got the download URL for 'users/me/profile.png''
+                    ImageView imageView1 = imageViewReference.get();
                     Glide.with(mContext)
                             .load(uri.toString())
-                            .into(imageView);
+                            .into(imageView1);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
