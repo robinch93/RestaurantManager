@@ -147,6 +147,7 @@ public class SearchRider_map extends AppCompatActivity implements OnMapReadyCall
             @Override
             public void onClick(View view) {
                 Log.i(TAG, "Selected Rider: " + markers.get(mMarker));
+                Toast.makeText(getApplicationContext(), "Rider id " + markers.get(mMarker) + " Selected", Toast.LENGTH_SHORT).show();
             }
         });
 

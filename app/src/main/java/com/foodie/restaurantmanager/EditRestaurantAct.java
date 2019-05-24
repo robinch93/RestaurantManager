@@ -102,14 +102,6 @@ public class EditRestaurantAct extends Activity {
             openhoursTxt.setSelection(spinnerPosition);
         }
 
-        ImageButton backButton = (ImageButton)this.findViewById(R.id.btnBack);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
         saveBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
