@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#D3D3D3"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/layoutTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:background="#00695C"
+        android:animateLayoutChanges="true"
+        android:paddingTop="15dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.10"
+            android:background="#00695C"
+            app:srcCompat="@drawable/back"  />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="100dp"
+            android:gravity="center_horizontal"
+            android:layout_weight="0.80"
+            android:inputType="textPersonName"
+            android:text="Most Popular"
+            android:textSize="30sp"
+            android:textStyle="bold|italic" />
+
+    </LinearLayout>
+
+
+    <ListView
+        android:id="@+id/popularList"
+        android:layout_below="@+id/layoutTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" >
+    </ListView>
+
+    <!--
+    <ListView
+        android:id="@+id/simpleListView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layoutTitle"
+        android:divider="@color/material_blue_grey_800"
+        android:dividerHeight="1dp" />
+    -->
+
+</RelativeLayout>

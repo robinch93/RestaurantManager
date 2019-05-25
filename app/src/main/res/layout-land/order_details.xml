@@ -81,7 +81,21 @@
                 android:layout_marginTop="5dp"
                 android:text="Status:"
                 android:textStyle="bold"/>
-
+            <TextView
+                android:id="@+id/ratingsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_alignParentTop="true"
+                android:text="User Ratings:"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/commentsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="User Comments:"
+                android:textStyle="bold"/>
 
         </LinearLayout>
 
@@ -118,6 +132,44 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text="status" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <CheckBox
+                    android:id="@+id/ratingsChk1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?android:attr/starStyle"
+                    />
+                <CheckBox
+                    android:id="@+id/ratingsChk2"
+                    style="?android:attr/starStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:id="@+id/ratingsChk3"
+                    style="?android:attr/starStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:id="@+id/ratingsChk4"
+                    style="?android:attr/starStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:id="@+id/ratingsChk5"
+                    style="?android:attr/starStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/comments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_alignParentTop="true"
+
+                android:text="Enter comments here.." />
 
         </LinearLayout>
     </LinearLayout>

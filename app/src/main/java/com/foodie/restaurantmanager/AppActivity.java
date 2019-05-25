@@ -175,7 +175,11 @@ public class AppActivity extends AppCompatActivity
                 startActivity(intent);
             }
 
-        } else if (id == R.id.nav_logout) {
+        }else if (id == R.id.nav_popular) {
+            Intent intent = new Intent(getBaseContext(), PopularMeals.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.nav_logout) {
             AuthUI.getInstance()
                     .signOut(this)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:id="@+id/textView"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="18dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/restromenu"/>
+
+    <TextView
+        android:id="@+id/orderedMenuID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/orderedMenuName"
+        android:layout_alignStart="@+id/orderedMenuName"
+        android:layout_alignTop="@+id/textView"
+        android:text="Pizza"
+        android:textStyle="bold"/>
+
+
+    <ImageView
+        android:id="@+id/textView1"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignStart="@+id/textView"
+        android:layout_alignLeft="@+id/textView"
+        android:layout_below="@+id/textView"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/openhours"/>
+
+    <TextView
+        android:id="@+id/orderedMenuName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView1"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_toEndOf="@+id/textView1"
+        android:layout_toRightOf="@+id/textView1"
+        android:text="10am-12m"
+        android:textStyle="bold"/>
+
+</RelativeLayout>
