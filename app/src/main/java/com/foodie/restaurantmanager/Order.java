@@ -2,38 +2,35 @@ package com.foodie.restaurantmanager;
 
 import java.io.Serializable;
 
-public class Order implements Serializable {
-    private Integer orderID;
-    private String customerName;
-    private String status;
-    private String notes;
-    private String lunchTime;
-//    private JSONArray meals;
-    private String meals;
+import java.util.ArrayList;
 
-    // Constructor that is used to create an instance of the meal object
-    public Order(Integer orderID, String customerName, String status, String notes, String lunchTime, String meals) {
-        this.orderID = orderID;
-        this.customerName = customerName;
-        this.status = status;
-        this.notes = notes;
-        this.lunchTime = lunchTime;
-        this.meals = meals;
+public class Order implements Serializable {
+    public String o_id;
+    public String c_id;
+    public String r_id;
+    public String d_id;
+    public String notes;
+    public Integer status;  // 0 = Created,  1= Prepared, 2= Delivering, 3= Completed
+    // String[] statusString = { "Created", "Prepared", "Delivering", "Completed" };
+    public ArrayList<Meal> items = new ArrayList<Meal>();
+    public String customerName;
+    public String orderTime;
+    public String creationTime;
+
+    public Order() {
+        // Default constructor required for calls to DataSnapshot.getValue(Restaurant.class)
     }
 
-    public Integer getOrderID(){ return orderID;}
-    public String getcustomerName(){ return customerName;}
-    public String getstatus(){ return status;}
-    public String getnotes(){ return notes;}
-    public String getlunchTime(){ return lunchTime;}
-    public String getmeals(){ return meals;}
-
-    public void setOrderID(Integer orderID) { this.orderID = orderID;}
-    public void setcustomerName(String customerName) { this.customerName = customerName;}
-    public void setstatus(String status) { this.status = status;}
-    public void setnotes(String notes) { this.notes = notes;}
-    public void setlunchTime(String lunchTime) { this.lunchTime = lunchTime;}
-    public void setmeals(String meals) { this.meals = meals;}
-
-
+    public Order(String o_id, String c_id, String r_id,String d_id, String notes, Integer status, ArrayList<Meal> items, String customerName, String orderTime, String creationTime) {
+        this.o_id = o_id;
+        this.c_id = c_id;
+        this.r_id = r_id;
+        this.d_id = d_id;
+        this.notes = notes;
+        this.status = status;
+        this.items = items;
+        this.customerName = customerName;
+        this.orderTime = orderTime;
+        this.creationTime = creationTime;
+    }
 }

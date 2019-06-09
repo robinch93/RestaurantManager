@@ -135,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
                         mDatabase = FirebaseDatabase.getInstance().getReference("restaurants");
                         String restaurantId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                         String token = task.getResult().getToken();
+                        Log.d("Token", token + " ");
                         mDatabase.child(restaurantId).child("profile").child("token").setValue(token);
                         mDatabase.child(restaurantId).child("profile").child("r_id").setValue(restaurantId);
                         startActivity(new Intent(getApplicationContext(), AppActivity.class));

@@ -43,7 +43,6 @@ public class Menu extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu);
-        String json = MyJSON.getData(getBaseContext(),1);
         mDatabase = FirebaseDatabase.getInstance().getReference("restaurants");
         restaurantid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         listView = (ListView) findViewById(R.id.menuList);
@@ -88,34 +87,6 @@ public class Menu extends AppCompatActivity {
             case (EditACTIVITY_REQUEST_CODE) : {
                 if (resultCode == Activity.RESULT_OK) {
                     getItems(restaurantid);
-                    // TODO Extract the data returned from the child Activity.
-                    Meal item = (Meal)data.getSerializableExtra("item");
-//                    Integer id = Integer.parseInt(data.getStringExtra("id"));
-//                    View v = listView.getChildAt(id-1);
-//
-//                    if(v == null)
-//                        return;
-//                    try {
-//                        for (int i=0; i < mealResult.length(); i++){
-//                            JSONObject itemArr = (JSONObject)mealResult.get(i);
-//                            Log.v("image1:82",id +": " + itemArr.get("id"));
-//                            if(itemArr.get("id").equals(id)){
-//                                Log.v("image1:83",item.getmenuImg());
-//                                itemArr.put("menuImg", item.getmenuImg());
-//                                itemArr.put("menuName", item.getmenuName());
-//                                itemArr.put("menuDesc", item.getmenuDesc());
-//                                itemArr.put("menuPrice", item.getmenuPrice());
-//                                itemArr.put("menuQty", item.getmenuQty());
-//                            }
-//                        }
-//                    }
-//                    catch (JSONException e) {
-//                        Log.e("MYAPP", "unexpected JSON exception", e);
-//                    }
-//                    MyJSON.saveData(getBaseContext(), mealResult.toString(),1);
-//                    updateListView();
-//                    TextView someText = (TextView) v.findViewById(R.id.sometextview);
-//                    someText.setText("Hi! I updated you manually!");
                 }
                 break;
             }
@@ -129,28 +100,18 @@ public class Menu extends AppCompatActivity {
         mDatabase.child(restaurantId).child("items").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Log.d("meal", "onChildAdded:" + dataSnapshot.getKey());
                 Meal meal=dataSnapshot.getValue(Meal.class);
                 mealsList.add(meal);
                 mAdapter.notifyDataSetChanged();
-//                mAdapter = new MealAdapter(getApplicationContext(),mealsList);
-//                listView.setAdapter(mAdapter);
             }
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
             @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-            }
+            public void onChildRemoved(DataSnapshot dataSnapshot) { }
             @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-            }
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) { }
         });
-
     }
 }

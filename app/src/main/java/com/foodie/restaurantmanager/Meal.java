@@ -3,12 +3,13 @@ package com.foodie.restaurantmanager;
 import java.io.Serializable;
 
 public class Meal implements Serializable {
-    private String m_id;
-    private String menuImg;
-    private String menuName;
-    private String menuDesc;
-    private Double menuPrice;
-    private Integer menuQty;
+    public String m_id;
+    public String menuImg;
+    public String menuName;
+    public String menuDesc;
+    public Double menuPrice;
+    public Integer menuQty;
+    public Integer quantity;
 
     public Meal() {
         // Default constructor required for calls to DataSnapshot.getValue(Restaurant.class)
