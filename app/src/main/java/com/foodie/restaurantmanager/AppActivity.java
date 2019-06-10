@@ -86,6 +86,13 @@ public class AppActivity extends AppCompatActivity
         String restaurantid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         Intent i = getIntent();
+        if(i.hasExtra("o_id")){
+            String o_id = i.getStringExtra("o_id");
+            Intent intent = new Intent(getBaseContext(), Orders.class);
+            intent.putExtra("o_id",o_id);
+            startActivity(intent);
+        }
+
         restaurant = (Restaurant) i.getSerializableExtra("item");
         if(restaurant == null){
             getRestaurant(restaurantid);
@@ -192,7 +199,7 @@ public class AppActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-        return true;
+        return false;
     }
 
     public boolean isServicesOK(){

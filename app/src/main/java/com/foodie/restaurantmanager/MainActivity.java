@@ -67,8 +67,12 @@ public class MainActivity extends AppCompatActivity {
                     Restaurant restaurant;
                     // Get Post object and use the values to update the UI
                     restaurant = dataSnapshot.getValue(Restaurant.class);
-                    Log.v("AppActivity", "" + restaurant);
+                    Log.d("AppActivity", "" + restaurant);
                     Intent i = new Intent(getApplicationContext(), AppActivity.class);
+                    if(getIntent().hasExtra("o_id")){
+                        String o_id = getIntent().getStringExtra("o_id");
+                        i.putExtra("o_id",o_id);
+                    }
                     i.putExtra("item", restaurant);
                     startActivity(i);
                     finish();
