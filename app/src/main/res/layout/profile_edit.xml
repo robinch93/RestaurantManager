@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="#D3D3D3">
 
     <LinearLayout
@@ -157,17 +157,23 @@
 
                     </LinearLayout>
 
-                    <Button
-                        android:id="@+id/saveButton"
+                    <LinearLayout
+                        android:id="@+id/layoutButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/openhoursLayout"
-                        android:paddingTop="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginLeft="250dp"
-                        android:text="SAVE"
-                        android:textStyle="bold" />
+                        android:layout_gravity="center"
+                        android:orientation="vertical">
 
+                        <Button
+                            android:id="@+id/editButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="35dp"
+                            android:background="@drawable/backgroundstylewithgradient"
+                            android:text="Update Profile"
+                            android:textColor="#fff" />
+                    </LinearLayout>
                 </LinearLayout>
 
             </TableLayout>
