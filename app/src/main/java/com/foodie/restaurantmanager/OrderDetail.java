@@ -2,6 +2,9 @@ package com.foodie.restaurantmanager;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -14,21 +17,27 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class OrderDetail extends AppCompatActivity {
+    private static final String TAG = "OrderDetails";
+
     private ListView listView;
     private MealAdapter mAdapter;
     ArrayList<Meal> mealsList;
@@ -36,6 +45,11 @@ public class OrderDetail extends AppCompatActivity {
     private String  mealResultString;
     private DatabaseReference mDatabase;
     private Order order;
+    private Customer customer;
+    private Restaurant restaurant;
+    private LatLng restaurantLatLng;
+    private LatLng customerLatLng;
+    private Float distance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +72,9 @@ public class OrderDetail extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.list);
         getItems();
 
+        getRestaurant(order.r_id);
+        getCustomer(order.c_id);
+
         Button selectButton = (Button)findViewById(R.id.selectButton);
         selectButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,8 +87,16 @@ public class OrderDetail extends AppCompatActivity {
         pickedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //  get distance btw two points
+                float[] results = new float[1];
+                Location.distanceBetween(restaurantLatLng.latitude, restaurantLatLng.longitude,
+                        customerLatLng.latitude, customerLatLng.longitude,
+                        results);
+                distance = results[0];
+                Log.d(TAG, "distance:" + results[0]);
                 mDatabase = FirebaseDatabase.getInstance().getReference("orders");
                 mDatabase.child(order.o_id).child("status").setValue(2);
+                mDatabase.child(order.o_id).child("distance").setValue(distance);
             }
         });
 
@@ -116,6 +141,36 @@ public class OrderDetail extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) { }
         });
     }
+    private void getCustomer(String c_id ){
+        mDatabase = FirebaseDatabase.getInstance().getReference("customers");
+        mDatabase.child(c_id).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                customer = snapshot.getValue(Customer.class);
+                Log.d(TAG ,"customer.c_id: "+customer.c_id);
+                customerLatLng = getLocationFromAddress(customer.address);
+            }
+            @Override
+            public void onCancelled(DatabaseError firebaseError) {
+                Log.e("The read failed: " ,firebaseError.getMessage());
+            }
+        });
+    }
+    private void getRestaurant(String r_id ){
+        mDatabase = FirebaseDatabase.getInstance().getReference("restaurants");
+        mDatabase.child(r_id).child("profile").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                restaurant = snapshot.getValue(Restaurant.class);
+                Log.d(TAG ,"restaurant.r_id: "+restaurant.r_id);
+                restaurantLatLng = getLocationFromAddress(restaurant.address);
+            }
+            @Override
+            public void onCancelled(DatabaseError firebaseError) {
+                Log.e("The read failed: " ,firebaseError.getMessage());
+            }
+        });
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -132,5 +187,23 @@ public class OrderDetail extends AppCompatActivity {
                 break;
             }
         }
+    }
+    public LatLng getLocationFromAddress(String strAddress) {
+        Geocoder coder = new Geocoder(getApplicationContext());
+        List<Address> address;
+        LatLng p1 = null;
+        try {
+            // May throw an IOException
+            address = coder.getFromLocationName(strAddress, 5);
+            if (address == null) {
+                return null;
+            }
+            Address location = address.get(0);
+            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return p1;
     }
 }

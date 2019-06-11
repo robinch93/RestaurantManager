@@ -10,12 +10,13 @@ public class Order implements Serializable {
     public String r_id;
     public String d_id;
     public String notes;
-    public Integer status;  // 0 = Created,  1= Prepared, 2= Delivering, 3= Completed
-    // String[] statusString = { "Created", "Prepared", "Delivering", "Completed" };
+    public Integer status;
     public ArrayList<Meal> items = new ArrayList<Meal>();
-    public String customerName;
+    public Rating rating;
     public String orderTime;
     public String creationTime;
+    public String customerName;
+    public String restaurantName;
 
     public Order() {
         // Default constructor required for calls to DataSnapshot.getValue(Restaurant.class)
