@@ -44,7 +44,6 @@ public class OrderDetail extends AppCompatActivity {
 
         Intent intent = getIntent();
         order = (Order)intent.getSerializableExtra("item");
-        final Integer id = Integer.parseInt(intent.getStringExtra("id"));
         TextView orderID = (TextView)findViewById(R.id.orderID);
         TextView customerName = (TextView)findViewById(R.id.customerName);
         TextView status = (TextView)findViewById(R.id.status);
@@ -59,13 +58,20 @@ public class OrderDetail extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.list);
         getItems();
 
-        Button saveBtn = (Button)findViewById(R.id.saveButton);
-        saveBtn.setOnClickListener(new View.OnClickListener() {
-
+        Button selectButton = (Button)findViewById(R.id.selectButton);
+        selectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(), SearchRider_map.class);
                 startActivityForResult(intent, RiderACTIVITY_REQUEST_CODE);
+            }
+        });
+        Button pickedButton = (Button)findViewById(R.id.pickedButton);
+        pickedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDatabase = FirebaseDatabase.getInstance().getReference("orders");
+                mDatabase.child(order.o_id).child("status").setValue(2);
             }
         });
 
