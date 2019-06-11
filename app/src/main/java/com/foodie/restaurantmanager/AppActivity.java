@@ -54,7 +54,7 @@ import java.io.InputStream;
 public class AppActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private static final int ERROR_DIALOG_REQUEST = 9001;
-    private ImageButton buttonEdit;
+    private Button buttonEdit;
     private static final int EditACTIVITY_REQUEST_CODE = 0;
     public static final String Profile_data = "profile_data";
     private DatabaseReference mDatabase;
@@ -102,7 +102,7 @@ public class AppActivity extends AppCompatActivity
         }
 
 
-        buttonEdit = (ImageButton)findViewById(R.id.editButton);
+        buttonEdit = (Button)findViewById(R.id.editButton);
 
         buttonEdit.setOnClickListener(new View.OnClickListener() {
 
