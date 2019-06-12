@@ -39,11 +39,36 @@
             android:textStyle="bold|italic" />
 
     </LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/layoutSpinner"
+        android:layout_below="@+id/layoutTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="10dp">
 
+        <android.support.v7.widget.CardView
+            android:id="@+id/yourcardid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="1dp"
+            app:cardCornerRadius="20dp"
+            android:innerRadius="0dp"
+            android:shape="ring"
+            android:thicknessRatio="1.9"
+            >
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp" />
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
 
     <ListView
         android:id="@+id/orderList"
-        android:layout_below="@+id/layoutTitle"
+        android:layout_below="@+id/layoutSpinner"
         android:layout_width="wrap_content"
         android:layout_height="match_parent" >
     </ListView>

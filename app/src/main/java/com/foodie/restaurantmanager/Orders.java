@@ -3,24 +3,42 @@ package com.foodie.restaurantmanager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Spinner;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
-public class Orders extends AppCompatActivity {
+public class Orders extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private ListView listView;
     private OrderAdapter mAdapter;
     ArrayList<Order> ordersList;
     private static final int EditACTIVITY_REQUEST_CODE = 0;
-    private JSONArray orderResult;
+    private DatabaseReference mDatabase;
+    private String restaurantid;
+
+    private Integer statusFilter = 0;
+    private Spinner spinner;
+    //    private static final String[] paths = {"item 1", "item 2", "item 3"};
+    String[] statusString = { "ALL", "Created", "Prepared", "Delivering", "Completed" };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,19 +46,33 @@ public class Orders extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.order);
         String json = MyJSON.getData(getBaseContext(),2);
-
+        mDatabase = FirebaseDatabase.getInstance().getReference("orders");
+        restaurantid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         listView = (ListView) findViewById(R.id.orderList);
 
-        updateListView();
+        spinner = (Spinner)findViewById(R.id.spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item,statusString);
 
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
+        // if notification open selected
+        Intent i = getIntent();
+        if(i.hasExtra("o_id")){
+            String o_id = i.getStringExtra("o_id");
+            spinner.setSelection(2);
+        }
+//        updateListView();
+//        getItems(restaurantid);
 
         listView.setOnItemClickListener(new  AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
                 Order setItem = (Order) listView.getItemAtPosition(position); //
-                Integer val = setItem.getOrderID();
+                String val = setItem.o_id;
                 Intent intent = new Intent(getBaseContext(), OrderDetail.class);
-                intent.putExtra("id", val.toString());
+                intent.putExtra("id", val);
                 intent.putExtra("item", setItem);
                 startActivity(intent);
             }
@@ -53,64 +85,47 @@ public class Orders extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
+        Log.d("DeliveryRequestActivity",  "-position: " + position);
+        statusFilter = position;
+        getItems(restaurantid);
+    }
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        // TODO Auto-generated method stub
+    }
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        switch(requestCode) {
-//            case (EditACTIVITY_REQUEST_CODE) : {
-//                if (resultCode == Activity.RESULT_OK) {
-//                    // TODO Extract the data returned from the child Activity.
-//                    Order item = (Order)data.getSerializableExtra("item");
-//                    Integer id = Integer.parseInt(data.getStringExtra("id"));
-//                    View v = listView.getChildAt(id-1);
-//
-//                    if(v == null)
-//                        return;
-//                    try {
-//                        for (int i=0; i < orderResult.length(); i++){
-//                            JSONObject itemArr = (JSONObject)orderResult.get(i);
-//                            if(itemArr.get("orderID").equals(id)){
-//                                itemArr.put("orderID", item.getOrderID());
-//                                itemArr.put("customerName", item.getcustomerName());
-//                                itemArr.put("status", item.getstatus());
-//                                itemArr.put("notes", item.getnotes());
-//                                itemArr.put("lunchTime", item.getlunchTime());
-//                                itemArr.put("meals", item.getorder());
-//                            }
-//                        }
-//                    }
-//                    catch (JSONException e) {
-//                        Log.e("MYAPP", "unexpected JSON exception", e);
-//                    }
-//                    MyJSON.saveData(getBaseContext(), orderResult.toString(),1);
-//                    updateListView();
-//                }
-//                break;
-//            }
-//        }
-//    }
-    public void updateListView(){
-        ordersList = new ArrayList<Order>();
-        try {
-            String json = MyJSON.getData(getBaseContext(),2);
-            orderResult = new JSONArray(json);
-            for (int i=0; i<orderResult.length(); i++) {
-                JSONObject order = orderResult.getJSONObject(i);
-                Integer orderID = order.getInt("orderID");
-                String customerName = order.getString("customerName");
-                String status = order.getString("status");
-                String notes = order.getString("notes");
-                String lunchTime = order.getString("lunchTime");
-                String meals = order.getString("meals");
-                ordersList.add(new Order(orderID, customerName, status, notes, lunchTime, meals));
+    public void getItems(String restaurantId){
+        ordersList = new ArrayList<>();
+        mAdapter = new OrderAdapter(this,ordersList);
+        listView.setAdapter(mAdapter);
+        mDatabase.orderByChild("r_id").equalTo(restaurantId).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Order order=dataSnapshot.getValue(Order.class);
+                if(statusFilter == 0){
+                    ordersList.add(order);
+                } else if(statusFilter-1 == order.status){
+                    ordersList.add(order);
+                }
+                Collections.sort(ordersList, new OrderTimeComparator());
+                mAdapter.notifyDataSetChanged();
             }
-            mAdapter = new OrderAdapter(this,ordersList);
-            listView.setAdapter(mAdapter);
-        } catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) { }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
+            @Override
+            public void onCancelled(DatabaseError databaseError) { }
+        });
+    }
+    public class OrderTimeComparator implements Comparator<Order>
+    {
+        public int compare(Order left, Order right) {
+            return right.orderTime.compareTo(left.orderTime);
         }
-
     }
 }

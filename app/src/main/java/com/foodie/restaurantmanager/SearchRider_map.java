@@ -1,6 +1,7 @@
 package com.foodie.restaurantmanager;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -147,7 +148,12 @@ public class SearchRider_map extends AppCompatActivity implements OnMapReadyCall
             @Override
             public void onClick(View view) {
                 Log.i(TAG, "Selected Rider: " + markers.get(mMarker));
-                Toast.makeText(getApplicationContext(), "Rider id " + markers.get(mMarker) + " Selected", Toast.LENGTH_SHORT).show();
+                String d_id = markers.get(mMarker);
+                Toast.makeText(getApplicationContext(), "Rider id " + d_id + " Selected", Toast.LENGTH_SHORT).show();
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("d_id", d_id);
+                setResult(Activity.RESULT_OK, resultIntent);
+                finish();
             }
         });
 
@@ -178,7 +184,7 @@ public class SearchRider_map extends AppCompatActivity implements OnMapReadyCall
                 for (DataSnapshot postSnapshot: snapshot.getChildren()) {
                     Rider rider = postSnapshot.getValue(Rider.class);
                     addRider(rider);
-                    Log.e("Get Data", rider.name);
+                    Log.e("Get Data", rider.name + "");
                 }
             }
             @Override

@@ -2,32 +2,28 @@ package com.foodie.restaurantmanager;
 
 import java.io.Serializable;
 
-public class Restaurant implements Serializable {
-    public String r_id;
+public class Customer implements Serializable {
+    public String c_id;
     public String name;
     public String email;
-    public String phone;
     public String description;
     public String address;
-    public String openhours;
     public String image;
+    public String phone;
     public String token;
-    public Integer totalDeliveries;
-    public Float overallRating;
 
-    public Restaurant() {
+    public Customer() {
         // Default constructor required for calls to DataSnapshot.getValue(Restaurant.class)
     }
 
-    public Restaurant(String r_id, String name, String email, String phone, String description, String address, String openhours, String image, String token) {
-        this.r_id = r_id;
+    public Customer(String c_id, String name, String email, String description, String address, String image,String token, String phone) {
+        this.c_id = c_id;
         this.name = name;
         this.email = email;
-        this.phone = phone;
         this.description = description;
         this.address = address;
-        this.openhours = openhours;
         this.image = image;
         this.token = token;
+        this.phone = phone;
     }
 }

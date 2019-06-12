@@ -181,12 +181,38 @@
 
     </LinearLayout>
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layoutSaveButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layoutText"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingTop="15dp">
+
+        <Button
+            android:id="@+id/selectButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Select Rider"
+            android:textStyle="bold" />
+        <Button
+            android:id="@+id/pickedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Order Picked"
+            android:textStyle="bold" />
+
+    </LinearLayout>
     <ListView
         android:id="@+id/list"
-        android:layout_below="@+id/layoutText"
+        android:layout_below="@+id/layoutSaveButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="match_parent" >
     </ListView>
+
 
 </RelativeLayout>
 

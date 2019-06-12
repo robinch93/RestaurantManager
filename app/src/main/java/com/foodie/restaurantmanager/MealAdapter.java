@@ -72,6 +72,8 @@ public class MealAdapter extends ArrayAdapter<Meal> {
             });
         }
 
+
+
         TextView menuName = (TextView) listItem.findViewById(R.id.menuNameTv);
         menuName.setText(currentmeal.getmenuName());
 

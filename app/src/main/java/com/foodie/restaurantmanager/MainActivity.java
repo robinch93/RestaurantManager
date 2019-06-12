@@ -67,8 +67,12 @@ public class MainActivity extends AppCompatActivity {
                     Restaurant restaurant;
                     // Get Post object and use the values to update the UI
                     restaurant = dataSnapshot.getValue(Restaurant.class);
-                    Log.v("AppActivity", "" + restaurant);
+                    Log.d("AppActivity", "" + restaurant);
                     Intent i = new Intent(getApplicationContext(), AppActivity.class);
+                    if(getIntent().hasExtra("o_id")){
+                        String o_id = getIntent().getStringExtra("o_id");
+                        i.putExtra("o_id",o_id);
+                    }
                     i.putExtra("item", restaurant);
                     startActivity(i);
                     finish();
@@ -135,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
                         mDatabase = FirebaseDatabase.getInstance().getReference("restaurants");
                         String restaurantId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                         String token = task.getResult().getToken();
+                        Log.d("Token", token + " ");
                         mDatabase.child(restaurantId).child("profile").child("token").setValue(token);
                         mDatabase.child(restaurantId).child("profile").child("r_id").setValue(restaurantId);
                         startActivity(new Intent(getApplicationContext(), AppActivity.class));

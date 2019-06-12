@@ -9,7 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -34,20 +38,27 @@ public class OrderAdapter extends ArrayAdapter<Order> {
         Order currentorder = ordersList.get(position);
 
         TextView orderID = (TextView) listItem.findViewById(R.id.orderID);
-        orderID.setText(currentorder.getOrderID().toString());
+        orderID.setText(currentorder.o_id);
 
         TextView customerName = (TextView) listItem.findViewById(R.id.customerName);
-        customerName.setText(currentorder.getcustomerName());
+        customerName.setText(currentorder.customerName);
 
         TextView status = (TextView) listItem.findViewById(R.id.status);
-        status.setText(currentorder.getstatus());
+        String[] statusString = { "Created", "Prepared", "Delivering", "Completed" };
+        status.setText(statusString[currentorder.status]);
 
-//        TextView notes = (TextView) listItem.findViewById(R.id.notes);
-//        notes.setText(currentorder.getnotes());
+        TextView notes = (TextView) listItem.findViewById(R.id.notes);
+        notes.setText(currentorder.notes);
 //
-//        TextView lunchTime = (TextView) listItem.findViewById(R.id.lunchTime);
-//        lunchTime.setText(currentorder.getlunchTime());
-
+        TextView lunchTime = (TextView) listItem.findViewById(R.id.lunchTime);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        try {
+            Date date = format.parse(currentorder.orderTime);
+            String currentDateTimeString = DateFormat.getDateTimeInstance().format(date);
+            lunchTime.setText(currentDateTimeString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         return listItem;
     }

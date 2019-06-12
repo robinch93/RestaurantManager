@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center_horizontal">
 
@@ -93,7 +93,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingLeft="20dp"
-                            android:text="@string/r_phone"/>
+                            android:text="@string/r_phone"
+                            android:inputType="number"/>
                     </LinearLayout>
                     <LinearLayout
                         android:id="@+id/lAddress"
@@ -157,20 +158,23 @@
 
                     </LinearLayout>
 
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/layoutButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
                     <Button
-                        android:id="@+id/saveButton"
+                        android:id="@+id/editButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/openhoursLayout"
-                        android:paddingTop="10dp"
-                        android:layout_marginTop="10dp"
                         android:layout_gravity="center_horizontal"
-                        android:text="SAVE"
-                        android:textColor="#fff"
-                        android:background="@drawable/buttonstylewithgradient"
-
-                        android:textStyle="bold" />
-
+                        android:layout_marginTop="35dp"
+                        android:background="@drawable/backgroundstylewithgradient"
+                        android:text="Update Profile"
+                        android:textColor="#fff" />
                 </LinearLayout>
 
             </TableLayout>
