@@ -48,6 +48,7 @@ public class EditRestaurantAct extends Activity {
     private Bitmap photo;
     public static final String Profile_data = "profile_data";
     String[] openhours = { "From - To", "9am - 11am", "12pm - 5pm", "6pm - 10pm"};
+    String imagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +69,8 @@ public class EditRestaurantAct extends Activity {
 //        openhoursTxt.setSelected(true);
         String compareValue = getIntent().getStringExtra("openhoursTv");
 
-        String image = getIntent().getStringExtra("picturePath");
+        imagePath = getIntent().getStringExtra("picturePath");
+        String image = imagePath;
         Log.v("picturepath", "" + image);
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://foodie-mad.appspot.com/");
@@ -120,9 +122,7 @@ public class EditRestaurantAct extends Activity {
                 resultIntent.putExtra("descriptionTxt", descriptionTxt.getText().toString());
                 resultIntent.putExtra("addressTxt", addressTxt.getText().toString());
                 resultIntent.putExtra("openhoursTxt", openhoursTxt.getSelectedItem().toString());
-                String r_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                String imageName = "images/restaurant/"+ r_id + ".jpg";
-                resultIntent.putExtra("picturePath", imageName);
+                resultIntent.putExtra("picturePath", imagePath);
                 setResult(Activity.RESULT_OK, resultIntent);
                 finish();
             }
@@ -174,10 +174,12 @@ public class EditRestaurantAct extends Activity {
 
     private void uploadFile(Bitmap bitmap) {
         String r_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        String imageName = "images/restaurant/"+ r_id + ".jpg";
+        if(imagePath == null){
+            imagePath = "images/customer/"+ r_id + ".jpg";
+        }
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://foodie-mad.appspot.com/");
-        StorageReference mountainImagesRef = storageRef.child(imageName);
+        StorageReference mountainImagesRef = storageRef.child(imagePath);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
         byte[] data = baos.toByteArray();
