@@ -157,6 +157,21 @@
                     </LinearLayout>
 
                 </LinearLayout>
+
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="42dp"
+                    android:layout_alignLeft="@+id/resNameTv"
+                    android:layout_below="@+id/resAddressTv"
+                    android:layout_marginLeft="-7dp"
+                    android:layout_marginTop="-1dp"
+                    android:max="5"
+                    android:rating="1.0"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    android:stepSize="1.0"
+                    android:numStars="5"/>
                 <LinearLayout
                     android:id="@+id/layoutButton"
                     android:layout_width="wrap_content"
@@ -167,7 +182,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="35dp"
+                        android:layout_marginTop="15dp"
                         android:background="@drawable/backgroundstylewithgradient"
                         android:text="Update Profile"
                         android:textColor="#fff" />
