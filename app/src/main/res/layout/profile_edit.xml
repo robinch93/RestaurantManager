@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="#D3D3D3">
 
     <LinearLayout
@@ -50,7 +50,7 @@
                 <LinearLayout
                     android:id="@+id/layoutEdit"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:orientation="vertical">
 
@@ -58,12 +58,13 @@
                         android:id="@+id/lname"
                         android:orientation="horizontal"
                         android:paddingLeft="25dp"
+                        android:paddingTop="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <ImageView
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:src="@drawable/email"/>
+                            android:src="@drawable/ic_email_black"/>
                         <EditText
                             android:id="@+id/emailTxt"
                             android:textStyle="bold"
@@ -84,7 +85,7 @@
                         <ImageView
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:src="@drawable/call"/>
+                            android:src="@drawable/ic_smartphone_black_24dp"/>
                         <EditText
                             android:textStyle="bold"
                             android:id="@+id/phoneTxt"
@@ -104,7 +105,7 @@
                         <ImageView
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:src="@drawable/home"/>
+                            android:src="@drawable/ic_home_black_24dp"/>
                         <EditText
                             android:textStyle="bold"
                             android:id="@+id/addressTxt"
@@ -123,7 +124,7 @@
                         <ImageView
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:src="@drawable/info"/>
+                            android:src="@drawable/ic_info_black_24dp"/>
                         <EditText
                             android:textStyle="bold"
                             android:id="@+id/descriptionTxt"
@@ -145,7 +146,7 @@
                         <ImageView
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:src="@drawable/openhours"/>
+                            android:src="@drawable/ic_access_time_black_24dp"/>
 
                         <Spinner
                             android:id="@+id/spinner1"
@@ -163,8 +164,11 @@
                         android:layout_below="@+id/openhoursLayout"
                         android:paddingTop="10dp"
                         android:layout_marginTop="10dp"
-                        android:layout_marginLeft="250dp"
+                        android:layout_gravity="center_horizontal"
                         android:text="SAVE"
+                        android:textColor="#fff"
+                        android:background="@drawable/buttonstylewithgradient"
+
                         android:textStyle="bold" />
 
                 </LinearLayout>

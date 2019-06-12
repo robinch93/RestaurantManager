@@ -56,6 +56,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:paddingTop="10dp"
                     android:orientation="vertical">
                     <LinearLayout
                         android:id="@+id/lname"
@@ -66,7 +67,7 @@
                         <ImageView
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:src="@drawable/email"/>
+                            android:src="@drawable/ic_email_black"/>
                         <TextView
                             android:id="@+id/emailTv"
                             android:textStyle="bold"
@@ -86,7 +87,7 @@
                         <ImageView
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:src="@drawable/call"/>
+                            android:src="@drawable/ic_smartphone_black_24dp"/>
                         <TextView
                             android:textStyle="bold"
                             android:id="@+id/phoneTv"
@@ -106,7 +107,7 @@
                         <ImageView
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:src="@drawable/home"/>
+                            android:src="@drawable/ic_home_black_24dp"/>
                         <TextView
                             android:textStyle="bold"
                             android:id="@+id/addressTv"
@@ -125,7 +126,7 @@
                         <ImageView
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:src="@drawable/info"/>
+                            android:src="@drawable/ic_info_black_24dp"/>
                         <TextView
                             android:textStyle="bold"
                             android:id="@+id/descriptionTv"
@@ -144,7 +145,7 @@
                         <ImageView
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:src="@drawable/openhours"/>
+                            android:src="@drawable/ic_access_time_black_24dp"/>
                         <TextView
                             android:textStyle="bold"
                             android:id="@+id/openhoursTv"
@@ -161,7 +162,7 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_marginLeft="300dp"
-                        android:src="@drawable/edit"/>
+                        android:src="@drawable/ic_edit_black_24dp"/>
 
                 </LinearLayout>
 
