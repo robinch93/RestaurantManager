@@ -1,6 +1,8 @@
 package com.foodie.restaurantmanager;
 
-public class Rating {
+import java.io.Serializable;
+
+public class Rating implements Serializable {
     public Float stars;
     public String comment;
 

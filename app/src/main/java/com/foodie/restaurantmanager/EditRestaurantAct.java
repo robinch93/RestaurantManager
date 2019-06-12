@@ -89,8 +89,6 @@ public class EditRestaurantAct extends Activity {
                 }
             });
         }
-        saveBtn = (Button)findViewById(R.id.saveButton);
-
 
         //Creating the ArrayAdapter instance having the bank name list
         ArrayAdapter<String> aa1 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,openhours);
@@ -102,8 +100,8 @@ public class EditRestaurantAct extends Activity {
             openhoursTxt.setSelection(spinnerPosition);
         }
 
+        saveBtn = (Button)findViewById(R.id.saveButton);
         saveBtn.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
 //                Intent mainAct= new Intent(EditRestaurantAct.this,MainActivity.class);

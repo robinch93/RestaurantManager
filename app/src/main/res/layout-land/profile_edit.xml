@@ -154,14 +154,23 @@
 
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/saveButton"
+                <LinearLayout
+                    android:id="@+id/layoutButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/openhoursLayout"
-                    android:layout_marginLeft="180dp"
-                    android:text="SAVE"
-                    android:textStyle="bold" />
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/saveButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="35dp"
+                        android:background="@drawable/backgroundstylewithgradient"
+                        android:text="Update Profile"
+                        android:textColor="#fff" />
+                </LinearLayout>
 
             </LinearLayout>
 

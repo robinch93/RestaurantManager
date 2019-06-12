@@ -61,7 +61,7 @@ public class Orders extends AppCompatActivity implements AdapterView.OnItemSelec
         Intent i = getIntent();
         if(i.hasExtra("o_id")){
             String o_id = i.getStringExtra("o_id");
-            spinner.setSelection(2);
+            spinner.setSelection(0);
         }
 //        updateListView();
 //        getItems(restaurantid);
