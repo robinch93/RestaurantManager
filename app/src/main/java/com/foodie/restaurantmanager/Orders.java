@@ -63,7 +63,7 @@ public class Orders extends AppCompatActivity implements AdapterView.OnItemSelec
         Intent i = getIntent();
         if(i.hasExtra("o_id")){
             String o_id = i.getStringExtra("o_id");
-            spinner.setSelection(0);
+            spinner.setSelection(1);
         }
 //        updateListView();
 //        getItems(restaurantid);
@@ -133,7 +133,7 @@ public class Orders extends AppCompatActivity implements AdapterView.OnItemSelec
     public class OrderTimeComparator implements Comparator<Order>
     {
         public int compare(Order left, Order right) {
-            return right.orderTime.compareTo(left.orderTime);
+            return right.creationTime.compareTo(left.creationTime);
         }
     }
 }
