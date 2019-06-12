@@ -1,5 +1,6 @@
 package com.foodie.restaurantmanager;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -31,7 +33,7 @@ public class Orders extends AppCompatActivity implements AdapterView.OnItemSelec
     private ListView listView;
     private OrderAdapter mAdapter;
     ArrayList<Order> ordersList;
-    private static final int EditACTIVITY_REQUEST_CODE = 0;
+    private static final int orderDetailACTIVITY_REQUEST_CODE = 0;
     private DatabaseReference mDatabase;
     private String restaurantid;
 
@@ -84,6 +86,12 @@ public class Orders extends AppCompatActivity implements AdapterView.OnItemSelec
                 finish();
             }
         });
+    }
+    @Override
+    public void onResume()
+    {  // After a pause OR at startup
+        super.onResume();
+        getItems(restaurantid);
     }
     @Override
     public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {

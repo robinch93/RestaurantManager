@@ -83,6 +83,7 @@
             android:textStyle="bold"/>
         <TextView
             android:id="@+id/ratingsText"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -91,6 +92,7 @@
             android:textStyle="bold"/>
         <TextView
             android:id="@+id/commentsText"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -134,44 +136,23 @@
             android:layout_marginTop="5dp"
             android:layout_alignParentTop="true"
             android:text="New" />
-
-        <LinearLayout
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:visibility="gone"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <CheckBox
-                android:id="@+id/ratingsChk1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="?android:attr/starStyle"
-                android:clickable="false"
-                />
-            <CheckBox
-                android:id="@+id/ratingsChk2"
-                style="?android:attr/starStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="false"/>
-            <CheckBox
-                android:id="@+id/ratingsChk3"
-                style="?android:attr/starStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="false"/>
-            <CheckBox
-                android:id="@+id/ratingsChk4"
-                style="?android:attr/starStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="false"/>
-            <CheckBox
-                android:id="@+id/ratingsChk5"
-                style="?android:attr/starStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="false"/>
-        </LinearLayout>
+            android:layout_height="42dp"
+            android:layout_below="@+id/resAddressTv"
+            android:layout_marginTop="-1dp"
+            android:layout_marginLeft="-20dp"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            android:stepSize="1" />
+
         <TextView
             android:id="@+id/comments"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -192,6 +173,7 @@
 
         <Button
             android:id="@+id/selectButton"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -199,6 +181,7 @@
             android:textStyle="bold" />
         <Button
             android:id="@+id/pickedButton"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

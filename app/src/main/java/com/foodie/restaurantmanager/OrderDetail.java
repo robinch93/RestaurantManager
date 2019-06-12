@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -51,6 +52,11 @@ public class OrderDetail extends AppCompatActivity {
     private LatLng customerLatLng;
     private Float distance;
 
+    Button selectButton;
+    Button pickedButton;
+    TextView status;
+    String[] statusString = { "Created", "Prepared", "Delivering", "Completed" };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,12 +66,36 @@ public class OrderDetail extends AppCompatActivity {
         order = (Order)intent.getSerializableExtra("item");
         TextView orderID = (TextView)findViewById(R.id.orderID);
         TextView customerName = (TextView)findViewById(R.id.customerName);
-        TextView status = (TextView)findViewById(R.id.status);
+        status = (TextView)findViewById(R.id.status);
+        RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+        TextView comments = (TextView)findViewById(R.id.comments);
+        if(order.rating != null){
+            comments.setText(order.rating.comment);
+            String stars = (order.rating.stars != null) ? order.rating.stars.toString() : "0.0";
+            ratingBar.setRating(Float.parseFloat(stars));
+        }
 //        imageView = (ImageButton) findViewById(R.id.profImgBtn);
         orderID.setText(order.o_id);
         customerName.setText(order.customerName);
-        String[] statusString = { "Created", "Prepared", "Delivering", "Completed" };
         status.setText(statusString[order.status]);
+
+        selectButton = (Button)findViewById(R.id.selectButton);
+        pickedButton = (Button)findViewById(R.id.pickedButton);
+        // status of Order
+        if(order.status == 0){
+            selectButton.setVisibility(View.VISIBLE);
+        } else if(order.status == 1){
+            pickedButton.setVisibility(View.VISIBLE);
+        } else if(order.status == 2){
+            // do nothing
+        } else if(order.status == 3){
+            TextView commentsText = (TextView)findViewById(R.id.commentsText);
+            TextView ratingsText = (TextView)findViewById(R.id.ratingsText);
+            commentsText.setVisibility(View.VISIBLE);
+            ratingsText.setVisibility(View.VISIBLE);
+            ratingBar.setVisibility(View.VISIBLE);
+            comments.setVisibility(View.VISIBLE);
+        }
 //        mealResultString = item.items.toString();
 //        updateListView();
 
@@ -75,7 +105,7 @@ public class OrderDetail extends AppCompatActivity {
         getRestaurant(order.r_id);
         getCustomer(order.c_id);
 
-        Button selectButton = (Button)findViewById(R.id.selectButton);
+
         selectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,7 +113,7 @@ public class OrderDetail extends AppCompatActivity {
                 startActivityForResult(intent, RiderACTIVITY_REQUEST_CODE);
             }
         });
-        Button pickedButton = (Button)findViewById(R.id.pickedButton);
+
         pickedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,9 +124,12 @@ public class OrderDetail extends AppCompatActivity {
                         results);
                 distance = results[0];
                 Log.d(TAG, "distance:" + results[0]);
+                order.status = 2;
                 mDatabase = FirebaseDatabase.getInstance().getReference("orders");
-                mDatabase.child(order.o_id).child("status").setValue(2);
+                mDatabase.child(order.o_id).child("status").setValue(order.status);
                 mDatabase.child(order.o_id).child("distance").setValue(distance);
+                pickedButton.setVisibility(View.GONE);
+                status.setText(statusString[order.status]);
             }
         });
 
@@ -179,10 +212,14 @@ public class OrderDetail extends AppCompatActivity {
                 Log.d("OrderDetails:", " ");
                 if (resultCode == Activity.RESULT_OK) {
                     order.d_id = data.getStringExtra("d_id");
+                    order.status = 1;
                     Log.d("OrderDetails d_id:",order.r_id + " ");
                     mDatabase = FirebaseDatabase.getInstance().getReference("orders");
                     mDatabase.child(order.o_id).child("d_id").setValue(order.d_id);
-                    mDatabase.child(order.o_id).child("status").setValue(1);
+                    mDatabase.child(order.o_id).child("status").setValue(order.status);
+                    selectButton.setVisibility(View.GONE);
+                    pickedButton.setVisibility(View.VISIBLE);
+                    status.setText(statusString[order.status]);
                 }
                 break;
             }

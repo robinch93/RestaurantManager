@@ -23,6 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -59,6 +60,7 @@ public class AppActivity extends AppCompatActivity
     public static final String Profile_data = "profile_data";
     private DatabaseReference mDatabase;
     private Restaurant restaurant;
+    private RatingBar ratingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,13 +178,7 @@ public class AppActivity extends AppCompatActivity
         } else if (id == R.id.nav_order) {
             Intent intent = new Intent(getBaseContext(), Orders.class);
             startActivity(intent);
-        } else if (id == R.id.nav_search) {
-            if(isServicesOK()){
-                Intent intent = new Intent(getBaseContext(), SearchRider_map.class);
-                startActivity(intent);
-            }
-
-        }else if (id == R.id.nav_popular) {
+        } else if (id == R.id.nav_popular) {
             Intent intent = new Intent(getBaseContext(), PopularMeals.class);
             startActivity(intent);
         }
@@ -253,6 +249,9 @@ public class AppActivity extends AppCompatActivity
         TextView descriptionTv = (TextView)findViewById(R.id.descriptionTv);
         TextView addressTv = (TextView)findViewById(R.id.addressTv);
         TextView openhoursTv = (TextView)findViewById(R.id.openhoursTv);
+        ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+        String stars = (restaurant.overallRating != null) ? restaurant.overallRating.toString() : "0.0";
+        ratingBar.setRating(Float.parseFloat(stars));
         nameTv.setText(restaurant.name);
         emailTv.setText(restaurant.email);
         phoneTv.setText(restaurant.phone);
