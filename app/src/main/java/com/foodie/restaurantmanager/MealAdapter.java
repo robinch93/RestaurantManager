@@ -84,7 +84,9 @@ public class MealAdapter extends ArrayAdapter<Meal> {
         menuPrice.setText(currentmeal.getmenuPrice().toString());
 
         TextView menuQty = (TextView) listItem.findViewById(R.id.menuQtyTv);
-        menuQty.setText(currentmeal.getmenuQty().toString());
+        if(currentmeal.quantity != null){
+            menuQty.setText(currentmeal.quantity.toString());
+        }
 
         return listItem;
     }

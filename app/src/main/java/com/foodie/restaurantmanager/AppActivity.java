@@ -154,11 +154,6 @@ public class AppActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -177,9 +172,6 @@ public class AppActivity extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.nav_order) {
             Intent intent = new Intent(getBaseContext(), Orders.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_popular) {
-            Intent intent = new Intent(getBaseContext(), PopularMeals.class);
             startActivity(intent);
         }
         else if (id == R.id.nav_logout) {

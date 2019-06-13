@@ -12,6 +12,7 @@ public class Meal implements Serializable {
     public Integer quantity;
 
     public Meal() {
+        quantity = 1;
         // Default constructor required for calls to DataSnapshot.getValue(Restaurant.class)
     }
     // Constructor that is used to create an instance of the meal object
@@ -22,6 +23,7 @@ public class Meal implements Serializable {
         this.menuDesc = menuDesc;
         this.menuPrice = menuPrice;
         this.menuQty = menuQty;
+        quantity = 0;
     }
 
     public String getid(){ return m_id;}
@@ -30,6 +32,7 @@ public class Meal implements Serializable {
     public String getmenuDesc(){ return menuDesc;}
     public Double getmenuPrice(){ return menuPrice;}
     public Integer getmenuQty(){ return menuQty;}
+    public Integer getmenuQt(){ return quantity;}
 
     public void setid(String m_id) { this.m_id = m_id;}
     public void setmenuImg(String menuImg) { this.menuImg = menuImg;}
@@ -37,6 +40,7 @@ public class Meal implements Serializable {
     public void setmenuDesc(String menuDesc) { this.menuDesc = menuDesc;}
     public void setmenuPrice(Double menuPrice) { this.menuPrice = menuPrice;}
     public void setmenuQty(Integer menuQty) { this.menuQty = menuQty;}
+    public void setmenuQt(Integer quantity) { this.quantity = quantity;}
 
 
 }

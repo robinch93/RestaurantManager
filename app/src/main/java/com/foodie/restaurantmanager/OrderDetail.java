@@ -159,6 +159,7 @@ public class OrderDetail extends AppCompatActivity {
                 Meal meal=dataSnapshot.getValue(Meal.class);
                 for (Meal m: order.items){
                     if(m.m_id.equals(meal.m_id)){
+                        meal.quantity = m.quantity;
                         mealsList.add(meal);
                         mAdapter.notifyDataSetChanged();
                     }
