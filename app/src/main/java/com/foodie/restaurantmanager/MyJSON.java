@@ -25,13 +25,13 @@ public class MyJSON {
             "{id:9,menuImg:'hamburger',menuName:'hamburger',menuDesc:'hot hamburger',menuPrice:10.0,menuQty:10}" +
             "]";
     static String orders = "[" +
-            "{orderID:1,customerName:'Panther',status:0,lunchTime:'10:00',notes:'Add extra chips', meals:[" +
+            "{orderID:1,customerName:'Panther',status:1,lunchTime:'10:00',notes:'Add extra chips', meals:[" +
             "{id:1,menuImg:'milkshake',menuName:'milkshake',menuDesc:'hot milkshake',menuPrice:10.0,menuQty:10}," +
             "{id:3,menuImg:'oranges',menuName:'juices',menuDesc:'pure orange juice',menuPrice:10.0,menuQty:10}]}," +
-            "{orderID:1,customerName:'Panther',status:0,lunchTime:'10:00',notes:'Add extra chips', meals:[" +
+            "{orderID:1,customerName:'Panther',status:2,lunchTime:'10:00',notes:'Add extra chips', meals:[" +
             "{id:1,menuImg:'milkshake',menuName:'milkshake',menuDesc:'hot milkshake',menuPrice:10.0,menuQty:10}," +
             "{id:3,menuImg:'oranges',menuName:'juices',menuDesc:'pure orange juice',menuPrice:10.0,menuQty:10}]}," +
-            "{orderID:1,customerName:'Panther',status:0,lunchTime:'10:00',notes:'Add extra chips', meals:[" +
+            "{orderID:1,customerName:'Panther',status:3,lunchTime:'10:00',notes:'Add extra chips', meals:[" +
             "{id:1,menuImg:'milkshake',menuName:'milkshake',menuDesc:'hot milkshake',menuPrice:10.0,menuQty:10}," +
             "{id:3,menuImg:'oranges',menuName:'juices',menuDesc:'pure orange juice',menuPrice:10.0,menuQty:10}]}" +
             "]";
