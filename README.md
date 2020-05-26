@@ -1,5 +1,5 @@
 # RestaurantManager
-This app is one module of a Food Delivery Project. This app recieves the notification from Customer Notify app, 
+This app is one module of a Food Delivery Project. This module of the app recieves the notification from Customer Notify app, 
 with the details of food items ordered by customer. 
 
 
